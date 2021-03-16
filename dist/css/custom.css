@@ -1,0 +1,29 @@
+::placeholder {
+   font-size: 15px; 
+}
+
+.bg-brand {
+    background-color: rgb(16, 108, 177)!important;
+    border: 1px rgb(17, 110, 179) solid !important;
+    outline: none !important;
+    color: #ffffff;
+}
+
+.btn-brand {
+    background-color: rgb(16, 108, 177)!important;
+    border: 1px rgb(17, 110, 179) solid !important;
+    outline: none !important;
+    color: #ffffff;
+}
+
+.btn-brand:hover {
+    background-color: rgb(14, 91, 150)!important;
+}
+
+button.btn-brand:hover {
+    background-color: rgb(14, 91, 150)!important;
+}
+
+.bg-brand:focus {
+    outline: none !important;
+}
