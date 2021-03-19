@@ -1,5 +1,6 @@
 <!-- Main content -->
-<?php $limitation = $packages['package_limit']/1024; ?>
+<?php $upload = $packages['limit_upload']/1024; ?>
+<?php $download = $packages['limit_download']/1024; ?>
 <section class="content pt-3 pb-1 px-2">
   <div class="container-fluid">
     <div class="card card-primary card-outline">
@@ -18,8 +19,8 @@
             <div class="form-row">
               <div class="form-group col-6">
                 <label for="name">Nama Paket</label>
-                <input type="hidden" id="package_type" value="<?=$packages['package_type']?>">
-                <input type="text" class="form-control" id="name" name="name" value="<?=$packages['package_name']?>" autocomplete="off" required>
+                <input type="hidden" id="package_type" value="<?=$packages['billing_type']?>">
+                <input type="text" class="form-control" id="name" name="name" value="<?=$packages['name']?>" autocomplete="off" required>
               </div>
               <div class="form-group col-6">
                 <label for="price">Harga Paket</label>
@@ -31,8 +32,8 @@
                 <label for="type">Tipe Paket</label>
                 <div class="input-group">
                   <select class="custom-select" id="type" name="type" aria-describedby="typeHelp">
-                    <option value="<?=$packages['package_type']?>" selected><?=ucfirst($packages['package_type'])?></option>
-                    <option value="<?= ($packages['package_type'] != 'volume') ? 'volume' : 'speed' ?>"><?= ($packages['package_type'] != 'volume') ? 'Volume' : 'Speed' ?></option>
+                    <option value="<?=$packages['billing_type']?>" selected><?=ucfirst($packages['billing_type'])?></option>
+                    <option value="<?= ($packages['billing_type'] != 'volume') ? 'volume' : 'speed' ?>"><?= ($packages['billing_type'] != 'volume') ? 'Volume' : 'Speed' ?></option>
                   </select>
                 </div>
               </div>
@@ -41,7 +42,7 @@
                 <div class="input-group">
                   <select class="custom-select" name="upload">
                     <?php foreach($rate_limits as $row) : ?>
-                      <option value="<?=$row?>" <?= ($packages['package_type'] == 'speed') ? ($limitation == $row) ? 'selected' : '' : '' ?>><?=$row?></option>
+                      <option value="<?=$row?>" <?= ($packages['billing_type'] == 'speed') ? ($upload == $row) ? 'selected' : '' : '' ?>><?=$row?></option>
                     <?php endforeach; ?>
                   </select>
                   <div class="input-group-append">
@@ -56,7 +57,7 @@
                 <div class="input-group">
                   <select class="custom-select" name="download">
                     <?php foreach($rate_limits as $row) : ?>
-                      <option value="<?=$row?>" <?= ($packages['package_type'] == 'speed') ? ($limitation == $row) ? 'selected' : '' : '' ?>><?=$row?></option>
+                      <option value="<?=$row?>" <?= ($packages['billing_type'] == 'speed') ? ($download == $row) ? 'selected' : '' : '' ?>><?=$row?></option>
                     <?php endforeach; ?>
                   </select>
                   <div class="input-group-append">
@@ -69,7 +70,7 @@
               <div class="col" id="volume">
                 <label for="limit">Total Volume</label>
                 <div class="input-group">
-                  <input type="text" class="form-control" name="volume" value="<?= ($packages['package_type'] == 'volume') ? $packages['package_limit']/1048576 : '' ?>" placeholder="Masukkan total Volume Kuota dalam format MB" autocomplete="off">
+                  <input type="text" class="form-control" name="volume" value="<?= ($packages['billing_type'] == 'volume') ? $packages['volume']/1048576 : '' ?>" placeholder="Masukkan total Volume Kuota dalam format MB" autocomplete="off">
                   <div class="input-group-append">
                     <div class="input-group-text">
                       MB

@@ -82,7 +82,7 @@
             <a href="admin.php?task=assign-package" class="nav-link">
               <i class="nav-icon fas fa-user-plus"></i>
               <p>
-                Paket Voucher
+                Atur Bonus Paket
               </p>
             </a>
           </li>

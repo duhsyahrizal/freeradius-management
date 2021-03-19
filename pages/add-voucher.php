@@ -17,7 +17,7 @@
             <div class="form-group">
               <label for="username">Username</label>
               <input type="hidden" id="package_type" value="" name="package_type">
-              <input type="hidden" id="package_limit" value="" name="package_limit">
+              <input type="hidden" id="package_name" value="" name="package_name">
               <input type="text" class="form-control" id="username" name="username" placeholder="Masukkan username untuk voucher billing" autocomplete="off" autofocus required>
             </div>
             <div class="form-group">
@@ -35,7 +35,7 @@
               <label for="profile">Pilih Paket Billing</label>
               <select class="custom-select" id="profile" name="profile">
               <?php foreach($package as $row) : ?>
-                <option value="<?=$row['id']?>"><?=$row['package_name']?></option>
+                <option value="<?=$row['id']?>"><?=$row['name']?></option>
               <?php endforeach ?>
               </select>
             </div>
@@ -65,17 +65,6 @@
                   <div class="form-group">
                     <label for="start_hour">Jam Mulai</label>
                     <input type="text" class="form-control" id="start_hour" name="start_hour">
-                  </div>
-                </div>
-                <div class="col">
-                  <label for="volspeed" id="label">Limit</label>
-                  <div class="input-group">
-                    <input type="text" class="form-control" id="volspeed" name="volspeed" disabled autocomplete="off">
-                    <div class="input-group-append">
-                      <div class="input-group-text">
-                        MB
-                      </div>
-                    </div>
                   </div>
                 </div>
                 <div class="col">
@@ -212,22 +201,17 @@
         id: id,
       },
       success: function(res) {
-        console.log(res);
         let data = JSON.parse(res);
-        let type = data.package_type;
-        let limit = data.package_limit;
-        volspeed = limit/1048576;
+        let type = data.billing_type;
+        let name = data.name;
 
-        $('#volspeed').attr('value', volspeed);
-        $('#package_limit').attr('value', limit);
         $('#package_type').attr('value', type);
+        $('#package_name').attr('value', name);
 
         if(type == 'volume') {
-          $('#label').html('Kuota Limit');
           $('#upload').removeAttr('disabled');
           $('#download').removeAttr('disabled');
         } else {
-          $('#label').html('Speed Limit');
           $('#upload').attr('disabled', 'disabled');
           $('#download').attr('disabled', 'disabled');
         }
@@ -243,22 +227,16 @@
       },
       success: function(res) {
         let data = JSON.parse(res);
-        let type = data.package_type;
-        let limit = data.package_limit;
-        let speed, kuota;
-        volspeed = limit/1048576;
+        let type = data.billing_type;
+        let name = data.name;
 
-        $('#volspeed').attr('value', volspeed);
-        $('#package_limit').attr('value', limit);
         $('#package_type').attr('value', type);
+        $('#package_name').attr('value', name);
 
         if(type == 'volume') {
-          volspeed = limit/1048576;
-          $('#label').html('Kuota Limit');
           $('#upload').removeAttr('disabled');
           $('#download').removeAttr('disabled');
         } else {
-          $('#label').html('Speed Limit');
           $('#upload').attr('disabled', 'disabled');
           $('#download').attr('disabled', 'disabled');
         }

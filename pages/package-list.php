@@ -36,15 +36,19 @@
                   $num = 0;
                   while($row=$package->fetch_assoc()) :
                     $num=$num+1;
-                    $speedvolume = ($row['package_type'] == 'speed') ? convert_bytes($row['package_limit'],'K',0).' / '.convert_bytes($row['package_limit'],'K',0).' KB' : number_format($row['package_limit']/1048576,0).' MB';
-                    // $sv = ($speedvolume == '0') ? convert_bytes($speedvolume,'M').' MB' : convert_bytes($speedvolume,'G').' GB';
+                    switch($row['billing_type']) {
+                      case 'speed' :
+                        $updown = convert_bytes($row['limit_upload'],'K',0).' / '.convert_bytes($row['limit_download'],'K',0).' KB';
+                      case 'volume' : 
+                        $volume = number_format($row['volume']/1048576,0).' MB';
+                    }
                 ?>
                 <tr>
                   <td style="width: 5%;" class="text-center"><?=$num?></td>
-                  <td><?=$row['package_name']?></td>
-                  <td><?= $speedvolume ?></td>
+                  <td><?=$row['name']?></td>
+                  <td><?= ($row['billing_type'] == 'speed') ? $updown : $volume ?></td>
                   <td>Rp. <?=number_format($row['price'], 2, ",", ".")?></td>
-                  <td style="width: 11%;" align="middle"><a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-package&id=<?= $row['id']?>"><i class="far fa-edit"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm(<?=$row['id']?>,'<?=$row['package_name']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
+                  <td style="width: 11%;" align="middle"><a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-package&id=<?= $row['id']?>"><i class="far fa-edit"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm(<?=$row['id']?>,'<?=$row['name']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
                 </tr>
                 <?php endwhile; ?>
               </tbody>

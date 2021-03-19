@@ -65,7 +65,7 @@
     timePicker: false, //<==MAKE THE CHANGE HERE
     singleDatePicker: true, //<==MAKE THE CHANGE HERE
     locale: {
-      format: 'DD M YYYY'
+      format: 'DD-MM-YYYY'
     }
   })
   $("#start_date").val("<?=$date?>");

@@ -22,7 +22,7 @@
               <div class="icon">
                 <i class="ion ion-nuclear"></i>
               </div>
-              <a href="admin.php?task=router-client" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="admin.php?task=router-nas" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -67,7 +67,7 @@
               <div class="icon">
                 <i class="ion ion-ios-people"></i>
               </div>
-              <a href="admin.php?task=user-list" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="admin.php?task=voucher-list" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->

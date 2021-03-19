@@ -33,7 +33,7 @@ if(isset($_GET['task'])){
         $title = 'Ubah Paket';
         break;
       case 'assign-package':
-        $title = 'Paket Voucher';
+        $title = 'Bonus Paket';
         break;
       case 'user-active':
         $title = 'Monitor Online';

@@ -45,7 +45,7 @@
                 <input type="text" class="form-control float-right reservationtime" name="end_date" placeholder="Please set end date..">
               </div>
             </div>
-            <button type="submit" class="btn btn-primary float-right mt-3">Print Report</button>
+            <button type="submit" class="btn btn-primary btn-brand float-right mt-3">Print Report</button>
           </form>
         </div>
         <!-- /.card-body -->

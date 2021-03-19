@@ -29,7 +29,7 @@
                 <label for="type">Tipe Paket</label>
                 <div class="input-group">
                   <select class="custom-select" id="type" name="type" aria-describedby="typeHelp">
-                    <option value="volume">Volume</option>
+                    <option value="volume">Volume Base</option>
                     <option value="speed">Speed Limit</option>
                   </select>
                 </div>

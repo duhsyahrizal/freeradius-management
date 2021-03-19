@@ -6,7 +6,8 @@ include('./sql/connection.php');
 
   $action = $_GET['action'];
   $data = !isset($_GET['data'])?'':$_GET['data'];
-  $timestamp = date('Y-m-d H:i:s');
+  $timestamp = date('d-m-Y');
+  $user_login = $_SESSION['user'];
 
   if($action == 'login'){
     $username = $_POST['username'];
@@ -139,6 +140,7 @@ include('./sql/connection.php');
         $username = $_POST['username'];
         $password = $_POST['password'];
         $profile = $_POST['profile'];
+        $groupname = $_POST['package_name'];
         $idletimeout = $_POST['idletimeout'];
         $type = $_POST['package_type'];
         $volspeed = $_POST['package_limit'];
@@ -186,29 +188,24 @@ include('./sql/connection.php');
         $gender = isset($_POST['gender'])?$_POST['gender']:'';
         $board_name = isset($_POST['boarding_house_name'])?$_POST['boarding_house_name']:'';
         $telephone = !isset($_POST['telephone'])?'':$_POST['telephone'];
-        $user_login = $_SESSION['user'];
 
-        $queryIdle = "INSERT INTO radreply (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'Idle-Timeout', ':=', '".$idletimeout."')";
-        $queryAcct = "INSERT INTO radreply (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'Acct-Interim-Interval', ':=', '60')";
         $queryPassword = "INSERT INTO radcheck (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'Cleartext-Password', ':=', '".$password."')";
-
-        // run query radreply Idle Timeout
-        $conn->query($queryIdle);
-        // run query radreply Accounting
-        $conn->query($queryAcct);
         // run query radcheck Password
         $conn->query($queryPassword);
 
+        if(!empty($idletimeout)){
+          $queryIdle = "INSERT INTO radreply (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'Idle-Timeout', ':=', '".$idletimeout."')";
+          // run query radreply Idle Timeout
+          $conn->query($queryIdle);
+        }
+
         // check billing type is volume or speed limit
         if($type == 'speed'){
-          $querySup = "INSERT INTO radreply (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'WISPr-Bandwidth-Max-Up', ':=', '".$volspeed."')";
-          $querySdo = "INSERT INTO radreply (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'WISPr-Bandwidth-Max-Down', ':=', '".$volspeed."')";
+          $queryGroup = "INSERT INTO radusergroup (`username`, `groupname`, `priority`) VALUES ('".$username."', '".$groupname."', 1)";
           $querySessTime = "INSERT INTO radcheck (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'Expiration', ':=', '".$expired."')";
 
-          // run query radreply speed limit upload
-          $conn->query($querySup);
-          // run query radreply speed limit download
-          $conn->query($querySdo);
+          // run query radreply speed limit
+          $conn->query($queryGroup);
           // run query radcheck expiration time 30 days
           $conn->query($querySessTime);
           if($shared_users != null) {
@@ -218,17 +215,11 @@ include('./sql/connection.php');
           }
           
         } else {
-          $queryUpload = "INSERT INTO radreply (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'WISPr-Bandwidth-Max-Up', ':=', '".$limit_upload."')";
-          $queryDownload = "INSERT INTO radreply (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'WISPr-Bandwidth-Max-Down', ':=', '".$limit_download."')";
-          $queryVolume = "INSERT INTO radcheck (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'ChilliSpot-Max-Total-Octets', ':=', '".$volspeed."')";
+          $queryGroup = "INSERT INTO radusergroup (`username`, `groupname`, `priority`) VALUES ('".$username."', '".$groupname."', 1)";
           $querySessTime = "INSERT INTO radcheck (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'Expiration', ':=', '".$expired."')";
 
-          // run query radreply speed limit upload
-          $conn->query($queryUpload);
-          // run query radreply speed limit download
-          $conn->query($queryDownload);
           // run query radreply limit total transfer (volume)
-          $conn->query($queryVolume);
+          $conn->query($queryGroup);
           // run query radcheck expiration time 30 days
           $conn->query($querySessTime);
           if($shared_users != null) {
@@ -240,7 +231,7 @@ include('./sql/connection.php');
 
         $queryUserBill = "INSERT INTO user_billing (`username`, `password`, `billing_package_id`, `shared_users`, `bill_price`, `fullname`, `birthdate`, `boarding_house_name`, `telp`, `start_from`, `end_until`) VALUES ('".$username."', '".$password."', $profile, '".$shared_users_bill."', $price, '".$fullname."', '".$date_of_birth."', '".$board_name."', '".$telephone."', '".$start_date."', '".$expired."')";
 
-        $report = "INSERT INTO bill_report (`username`, `payment`, `billing_package_id`, `method`, `description`, `price`, `type`, `created_by`) VALUES ('".$username."', '".$payment."', '".$profile."', '".$paymentName."', '".$description."', '".$price."', 'voucher', '".$user_login."')";
+        $report = "INSERT INTO bill_report (`username`, `payment`, `billing_package_id`, `description`, `price`, `type`, `created_by`, `created_at`) VALUES ('".$username."', '".$payment."', '".$profile."', '".$description."', '".$price."', 'voucher', '".$user_login."', '".$timestamp."')";
 
         // run query user billing
         if ($conn->query($queryUserBill) === TRUE) {
@@ -268,6 +259,44 @@ include('./sql/connection.php');
       $shared_users = $_POST['shared_users'];
 
     }
+    else if($action == 'refill') {
+      $start_date = date('d M Y H:i:s');
+      $refill = date('d M Y H:i:s', strtotime("+30 days"));
+      $username = $_GET['username'];
+      $profile = $_GET['billing_id'];
+      $type = $_GET['type'];
+      $price = $_GET['price'];
+      if($type == 'speed') {
+        $queryRefill = "UPDATE radcheck SET `value` = '".$refill."' WHERE attribute = 'Expiration' AND username = '".$username."'";
+        $conn->query($queryRefill);
+      } else {
+        $queryRefill = "UPDATE radcheck SET `value` = '".$refill."' WHERE attribute = 'Expiration' AND username = '".$username."'";
+        $queryRefillTraffic = "UPDATE radacct SET `acctinputoctets` = 0, `acctoutputoctets` = 0 WHERE username = '".$username."' AND acctstoptime IS NOT NULL";
+        $conn->query($queryRefill);
+        $conn->query($queryRefillTraffic);
+      }
+      $report = "INSERT INTO bill_report (`username`, `payment`, `billing_package_id`, `description`, `price`, `type`, `created_by`, `created_at`) VALUES ('".$username."', 1, $profile, '', $price, 'voucher', '".$user_login."', '".$timestamp."')";
+      $conn->query($report);
+      $queryRefillBill = "UPDATE user_billing SET `start_from` = '".$start_date."', `end_until` = '".$refill."' WHERE username = '".$username."'";
+      if($conn->query($queryRefillBill) === TRUE) {
+        echo 'success';
+      } else {
+        echo 'failed';
+      }
+    }
+    else if($action == 'assign-profile') {
+      $username = $_POST['username'];
+      $billing = $_POST['billing'];
+
+      $queryBonus = "INSERT INTO radusergroup (`username`, `groupname`, `priority`) VALUES ('".$username."', '".$billing."', 0)";
+      
+      if($conn->query($queryBonus) === TRUE) {
+        echo 'success';
+      } else {
+        echo 'failed';
+      }
+
+    }
     else if($action == 'delete'){
       $username = $_GET['username'];
       $queryDeleteUserBill = "DELETE FROM user_billing WHERE username = '".$username."'";
@@ -282,6 +311,19 @@ include('./sql/connection.php');
         echo "failed";
       }
       
+    }
+    else if($action == 'delete-bonus') {
+      $username = $_GET['username'];
+      $groupname = $_GET['groupname'];
+
+      $queryBonus = "DELETE FROM radusergroup WHERE username = '".$username."' AND groupname = '".$groupname."' AND priority = 0";
+      
+      if($conn->query($queryBonus) === TRUE) {
+        echo 'success';
+      } else {
+        echo $conn->error;
+      }
+
     }
   }
   else if($data == 'nas'){
@@ -338,15 +380,22 @@ include('./sql/connection.php');
         if($type == 'volume') {
           $limit = $_POST['volume']*1048576;
           $queryVolume = "INSERT INTO radgroupcheck (`groupname`, `attribute`, `op`, `value`) VALUES ('".$name."', 'ChilliSpot-Max-Total-Octets', ':=', '".$limit."')";
+          $conn->query($queryVolume);
+          $querySave = "INSERT INTO billing_package (`name`, `volume`, `billing_type`, `price`) VALUES ('".$name."', $limit, '".$type."', $price)";
+          $conn->query($querySave);
         } else if($type == 'speed') {
           $upload = $_POST['upload']*1024;
           $download = $_POST['download']*1024;
           $queryUpload = "INSERT INTO radgroupcheck (`groupname`, `attribute`, `op`, `value`) VALUES ('".$name."', 'WISPr-Bandwidth-Max-Up', ':=', '".$upload."')";
           $queryDownload = "INSERT INTO radgroupcheck (`groupname`, `attribute`, `op`, `value`) VALUES ('".$name."', 'WISPr-Bandwidth-Max-Down', ':=', '".$download."')";
+          $querySave = "INSERT INTO billing_package (`name`, `limit_upload`, `limit_download`, `billing_type`, `price`) VALUES ('".$name."', $upload, $download, '".$type."', $price)";
+          $conn->query($querySave);
+          $conn->query($queryUpload);
+          $conn->query($queryDownload);
         }
         $queryAcct = "INSERT INTO radgroupreply (`groupname`, `attribute`, `op`, `value`) VALUES ('".$name."', 'Acct-Interim-Interval', ':=', '60')";
-        $querySave = "INSERT INTO billing_package (`package_name`, `package_limit`, `package_type`, `price`) VALUES ('".$name."', $upload, '".$type."', $price)";
-        if ($conn->query($querySave) === TRUE) {
+        // run query accounting user
+        if ($conn->query($queryAcct) === TRUE) {
           echo "success";
         } else {
           echo "failed";
@@ -358,7 +407,7 @@ include('./sql/connection.php');
     }
     else if($action == 'get-billing'){
       $id = $_GET['id'];
-      $queryType = "SELECT `package_limit`, `package_type` FROM billing_package WHERE id = $id";
+      $queryType = "SELECT `name`, `volume`, `limit_upload`, `limit_download`, `billing_type` FROM billing_package WHERE id = $id";
       $resType = $conn->query($queryType);
       $data = $resType->fetch_assoc();
 

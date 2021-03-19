@@ -11,7 +11,7 @@
   <div class="container-fluid">
   <div class="card card-primary card-outline">
         <div class="card-header bg-white">
-            <h3 class="card-title"><?= $title ?></h3>
+            <h3 class="card-title"><i class="fas fa-user-check mr-1"></i> <?= $title ?></h3>
             <div class="card-tools">
             <!-- Buttons, labels, and many other things can be placed here! -->
             <!-- Here is a label for example -->

@@ -35,7 +35,7 @@
             <div class="form-row mb-3">
               <div class="col">
                 <label for="profile">Paket Billing</label>
-                <input type="text" class="form-control" id="profile" name="profile" value="<?=$userbilling['package_name']?>" disabled>
+                <input type="text" class="form-control" id="profile" name="profile" value="<?=$userbilling['name']?>" disabled>
               </div>
               <div class="col" id="simultan">
                 <label for="shared_users">Pilih Berbagi Pengguna</label>

@@ -21,17 +21,17 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-          <div class="table-responsive-sm table-responsive-md">
-            <table class="table table-bordered dt-responsive nowrap text-sm" style="width:100%" id="alltable">
+          <div class="">
+            <table class="table table-responsive-sm table-responsive-md table-bordered dt-responsive nowrap text-sm" style="width:100%" id="alltable">
               <thead>
                 <tr class="bg-brand">
                   <th style="width: 5%;" scope="col">No</th>
                   <th scope="col">Username</th>
+                  <th scope="col">Password</th>
                   <th scope="col">Paket</th>
                   <th style="width: 15%;" scope="col">Berbagi Pengguna</th>
                   <th scope="col">Masa Aktif</th>
-                  <th scope="col">Harga</th>
-                  <!-- <th scope="col">Status</th> -->
+                  <th scope="col">Status</th>
                   <th style="width: 14%;" scope="col">Aksi</th>
                 </tr>
               </thead>
@@ -43,12 +43,12 @@
                 <tr>
                   <td class="text-center"><?= $num=$num+1 ?></td>
                   <td><?= $row['username'] ?></td>
-                  <td><span class="badge badge-primary bg-brand badge-lg px-1 py-1"><?= $row['package_name'] ?></span></td>
-                  <td><div class="badge badge-primary bg-brand"><?= $row['shared_users'] ?></div></td>
+                  <td><?= $row['password'] ?></td>
+                  <td><span class="badge badge-primary bg-brand px-1 py-1"><?= $row['name'] ?></span></td>
+                  <td><span class="badge badge-primary bg-brand"><i class="fas fa-user mr-1"></i> <?= $row['shared_users'] ?></span></td>
                   <td><?= $row['end_until'] ?></td>
-                  <td>Rp. <?= number_format($row['price'], 2, ",", ".") ?></td>
-                  <!-- <td><?= $row['end_'] ?></td> -->
-                  <td class="py-2"><button type="button" class="btn btn-success btn-sm" onclick="refillVoucher('<?=$row['username']?>')"><i class="fas fa-heartbeat"> </i></button> <a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-voucher&username=<?= $row['username']?>"><i class="far fa-edit"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm('<?=$row['username']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
+                  <td><span class="badge badge-<?= (strtotime($row['end_until']) < time()) ? 'danger' : 'success' ?> px-1 py-1"><i class="fas fa-user-<?= (strtotime($row['end_until']) < time()) ? 'times' : 'check' ?> mr-1"></i> <?= (strtotime($row['end_until']) < time()) ? 'Expired' : 'Tersedia' ?></span></td>
+                  <td class="py-2"><button type="button" class="btn btn-success btn-sm" onclick="refillVoucher('<?=$row['username']?>', '<?=$row['billing_id']?>', '<?=$row['billing_type']?>', '<?=$row['price']?>')"><i class="fas fa-heartbeat"> </i></button> <a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-voucher&username=<?= $row['username']?>"><i class="far fa-edit"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm('<?=$row['username']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
                 </tr>
               <?php 
                 endwhile; 
@@ -98,108 +98,9 @@
     });
   });
 
-  function disableUser(id){
-    var username = $(".username").val();
-    $.ajax({
-      method: "GET",
-      url: "./userman/process.php?data=user&action=get_status_user",
-      data: {
-        user_id: id,
-      },
-      success: function(res) {
-        if(res == 'disable'){
-          Swal.fire({
-            title: 'Action Enable',
-            text: "Are you sure to Enable this user?",
-            icon: 'info',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, Enable it!'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              $.ajax({
-                method: "GET",
-                url: "./userman/process.php?data=user&action=disable_user",
-                data: {
-                  user_id: id,
-                },
-                success: function(res) {
-                  if (res == "success") {
-                    Swal.fire({
-                      position: 'center',
-                      icon: 'success',
-                      title: 'Success.',
-                      showConfirmButton: false,
-                      timer: 1000
-                    }).then((result) => {
-                      if (result.dismiss === Swal.DismissReason.timer) {
-                        //console.log('I was closed by the timer')
-                        location.reload();
-                      }
-                    })
-                  }else{
-                    Swal.fire(
-                      'Error!',
-                      'Failed.',
-                      'error'
-                    )
-                  }
-                }
-              })
-            }
-          })
-        }
-        else if(res == 'active'){
-          Swal.fire({
-            title: 'Action Disable',
-            text: "Are you sure to Disable this user?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, Disable it!'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              $.ajax({
-                method: "GET",
-                url: "./userman/process.php?data=user&action=disable_user",
-                data: {
-                  user_id: id,
-                },
-                success: function(res) {
-                  if (res == "success") {
-                    Swal.fire({
-                      position: 'center',
-                      icon: 'success',
-                      title: 'Success.',
-                      showConfirmButton: false,
-                      timer: 1000
-                    }).then((result) => {
-                      if (result.dismiss === Swal.DismissReason.timer) {
-                        //console.log('I was closed by the timer')
-                        location.reload();
-                      }
-                    })
-                  }else{
-                    Swal.fire(
-                      'Error!',
-                      'Failed.',
-                      'error'
-                    )
-                  }
-                }
-              })
-            }
-          })
-        }
-      }
-    })
-  }
-
   function deleteConfirm(voucher){
     Swal.fire({
-      title: 'Hapus Data',
+      title: 'Hapus Voucher',
       text: "Yakin ingin menghapus voucher ("+voucher+")?",
       icon: 'warning',
       showCancelButton: true,
@@ -243,7 +144,7 @@
     })
   }
 
-  function refillVoucher(voucher){
+  function refillVoucher(voucher, billing_id, type, price){
     Swal.fire({
       title: 'Refill Voucher',
       text: "Yakin ingin me-refill voucher ("+voucher+")?",
@@ -260,9 +161,12 @@
             url: "./process.php?data=voucher&action=refill",
             data: {
               username: voucher,
+              billing_id: billing_id,
+              type: type,
+              price: price
             },
             success: function(res) {
-              console.log(res);
+              console.log(res)
               if (res == "success") {
                 Swal.fire({
                   position: 'center',
@@ -277,9 +181,10 @@
                     }
                 })
               }else{
+                console.log(res)
                 Swal.fire(
                   'Error!',
-                  'Gagal Menghapus voucher.',
+                  'Gagal Me-refill voucher.',
                   'error'
                 )
               }
