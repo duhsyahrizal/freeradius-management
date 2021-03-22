@@ -30,7 +30,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>10%<sup style="font-size: 20px">%</sup></h3>
+                <h3>6<sup style="font-size: 20px">%</sup></h3>
 
                 <p>CPU Load</p>
               </div>

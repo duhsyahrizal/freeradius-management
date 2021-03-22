@@ -17,7 +17,7 @@ $package = $conn->query($queryPackage);
 $queryGroup = "SELECT * FROM radusergroup";
 $usergroup = $conn->query($queryGroup);
 
-$queryUser = "SELECT username FROM radreply GROUP BY username";
+$queryUser = "SELECT username FROM user_billing";
 $users = $conn->query($queryUser);
 $total_user = $users->num_rows;
 
