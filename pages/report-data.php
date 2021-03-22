@@ -45,14 +45,14 @@
         <div class="callout callout-warning">
           <h5>Total Voucher Baru</h5>
 
-          <p><?=$refill?> Voucher</p>
+          <p><?=$vbaru?> Voucher</p>
         </div>
       </div>
       <div class="col">
         <div class="callout callout-success">
           <h5>Total Voucher Refill</h5>
 
-          <p><?=$vbaru?> Voucher</p>
+          <p><?=$refill?> Voucher</p>
         </div>
       </div>
       <div class="col">
