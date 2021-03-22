@@ -7,7 +7,9 @@ include('./sql/connection.php');
   $action = $_GET['action'];
   $data = !isset($_GET['data'])?'':$_GET['data'];
   $timestamp = date('d-m-Y');
-  $user_login = $_SESSION['user'];
+  if(isset($_SESSION['user'])){
+    $user_login = $_SESSION['user'];
+  }
 
   if($action == 'login'){
     $username = $_POST['username'];
@@ -79,7 +81,7 @@ include('./sql/connection.php');
     unset($_SESSION['user']);
     unset($_SESSION['token']);
     session_destroy();
-    header("Location:./index.php");
+    header("Location:./login.php");
   }
   else if($data == 'user-bayhost'){
     if($action == 'edit-user'){

@@ -70,7 +70,6 @@
     var username = $("#username").val();
     var password = $("#password").val();
     var remember = $('#remember').is(":checked");
-    console.log(remember);
     $("#submit").removeClass('disabled');
     $(this).addClass('disabled');
     $(".loader").removeClass('d-none');
@@ -84,6 +83,7 @@
           remember: remember,
         },
         success: function(res) {
+          console.log(res)
           if (res == "success") {
             window.location.href = "index.php";
           }else{
