@@ -256,8 +256,36 @@ include('./sql/connection.php');
     else if($action == 'update'){
       $username = $_POST['username'];
       $password = $_POST['password'];
+      $fullname = $_POST['fullname'];
+      $date_of_birth = $_POST['date_of_birth'];
+      $boarding_name = $_POST['boarding_name'];
+      $telephone = $_POST['telephone'];
       $shared_users = $_POST['shared_users'];
+      $before_shared = $_POST['before_shared_users'];
 
+      if($before_shared == 'unlimited') {
+        $querySharedUsers = "INSERT INTO radcheck (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'Simultaneous-Use', ':=', '".$shared_users."')";
+      } else {
+        $querySharedUsers = "UPDATE radcheck SET `value` = '".$shared_users."' WHERE attribute = 'Simultaneous-Use' AND username = '".$username."'";
+      }
+
+      if($shared_users == 'unlimited') {
+        $queryRemoveShared = "DELETE FROM radcheck WHERE username = '".$username."' AND attribute = 'Simultaneous-Use'";
+        $conn->query($queryRemoveShared);
+      }
+      $queryAccount = "UPDATE radcheck SET `value` = '".$password."' WHERE attribute = 'Cleartext-Password' AND username = '".$username."'";
+      
+      $conn->query($querySharedUsers);
+      $conn->query($queryAccount);
+      
+      $queryUserBill = "UPDATE user_billing SET `shared_users` = '".$shared_users."', `username` = '".$username."', `password` = '".$password."', `fullname` = '".$fullname."', `birthdate` = '".$date_of_birth."', `boarding_house_name` = '".$boarding_name."', `telp` = '".$telephone."'";
+      if($conn->query($queryUserBill) === TRUE) {
+        echo "New record Account created successfully";
+      } else {
+        echo "Error: " . $queryUserBill . "<br>" . $conn->error;
+      }
+
+      header("Location:./admin.php?task=voucher-list");
     }
     else if($action == 'refill') {
       $start_date = date('d M Y H:i:s');

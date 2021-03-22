@@ -18,7 +18,7 @@
             <div class="form-group">
               <label for="username">Username</label>
               <input type="hidden" id="package_type" value="<?=$userbilling['package_type']?>" name="package_type">
-              <input type="hidden" id="package_limit" value="<?=$row[6][5]?>" name="package_limit">
+              <input type="hidden" id="before_shared_users" value="<?=$userbilling['shared_users']?>" name="before_shared_users">
               <input type="text" class="form-control" id="username" name="username" value="<?=$username?>" placeholder="Masukkan username untuk voucher billing" autocomplete="off" autofocus required>
             </div>
             <div class="form-group">
@@ -94,8 +94,8 @@
             </div>
             <div class="form-row mb-3">
               <div class="col-6">
-                <label for="boarding_house_name">Nama Kost'an</label>
-                <input type="text" class="form-control" name="boarding_house_name" placeholder="Nama kost'an pengguna">
+                <label for="boarding_name">Nama Kost'an</label>
+                <input type="text" class="form-control" name="boarding_name" placeholder="Nama kost'an pengguna">
               </div>
               <div class="col-6">
                 <label for="telephone">Telp/Whatsapp</label>
