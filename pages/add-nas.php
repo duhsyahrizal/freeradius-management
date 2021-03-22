@@ -13,9 +13,9 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body text-sm">
-          <form action="./process.php?data=nas&action=save" method="post">
+          <form class="text-sm" action="./process.php?data=nas&action=save" method="post">
             <div class="form-group">
-              <label for="nasname">IP Router</label>
+              <label for="nasname">NAS IP Router</label>
               <input type="text" class="form-control" id="nasname" name="nasname" placeholder="Masukkan IP Router baru" required autofocus autocomplete="off">
             </div>
             <div class="form-group">

@@ -13,10 +13,10 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-          <form action="./process.php?data=nas&action=update" method="post">
+          <form class="text-sm" action="./process.php?data=nas&action=update" method="post">
           <input type="hidden" name="id" value="<?=$id?>">
             <div class="form-group">
-              <label for="nasname">Nas IP Address</label>
+              <label for="nasname">Nas IP Router</label>
               <input type="text" class="form-control" value="<?=$getdata['nasname']?>" id="nasname" name="nasname" required="true" autocomplete="off">
             </div>
             <div class="form-group">
@@ -31,7 +31,7 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="shortname">Short Name</label>
+              <label for="shortname">Nama Router</label>
               <input type="text" class="form-control" value="<?=$getdata['shortname']?>" id="shortname" name="shortname" required="true" autocomplete="off">
             </div>
             <button type="submit" class="btn btn-primary btn-brand pr-3 pl-3 pt-2 pb-2float-right mt-3 text-sm">Apply</button>
