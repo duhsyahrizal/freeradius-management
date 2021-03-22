@@ -61,13 +61,14 @@
       autoclose: true,
     });
   });
-  $('.reservationtime').daterangepicker({
+
+  var start = moment().subtract(-30, 'days');
+  var end = moment();
+  let startDate = $('.reservationtime').daterangepicker({
     timePicker: false, //<==MAKE THE CHANGE HERE
     singleDatePicker: true, //<==MAKE THE CHANGE HERE
     locale: {
       format: 'DD-MM-YYYY'
     }
   })
-  $("#start_date").val("<?=$date?>");
-  $("#end_date").val("<?=$endDate?>");
 </script>

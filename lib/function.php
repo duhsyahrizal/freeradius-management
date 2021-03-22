@@ -27,18 +27,6 @@ function convert_bytes_without_comm($bytes, $to, $decimal_places = 0) {
     return isset($formulas[$to]) ? $formulas[$to] : 0;
 }
 
-function secondsToTime($seconds) {
-    if(empty($seconds)) {
-        return 0;
-    } else {
-        $dtF = new \DateTime('@0');
-        $dtT = new \DateTime("@$seconds");
-        $datetime = $dtF->diff($dtT)->format('%h hours, %i minutes');
-        return $datetime;
-    }
-}
-
-
 function secondsToWords($seconds)
 {
     if(empty($seconds)) {

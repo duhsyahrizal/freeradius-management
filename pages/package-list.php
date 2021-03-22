@@ -24,7 +24,7 @@
             <table class="table table-bordered dt-responsive nowrap text-sm" id="alltable">
               <thead>
                 <tr class="bg-brand">
-                  <th scope="col">No</th>
+                  <th style="width: 5%;" class="text-center" scope="col">No</th>
                   <th scope="col">Nama Paket</th>
                   <th scope="col">Volume/Speed</th>
                   <th scope="col">Harga</th>
@@ -44,11 +44,11 @@
                     }
                 ?>
                 <tr>
-                  <td style="width: 5%;" class="text-center"><?=$num?></td>
+                  <td><?=$num?></td>
                   <td><?=$row['name']?></td>
                   <td><?= ($row['billing_type'] == 'speed') ? $updown : $volume ?></td>
                   <td>Rp. <?=number_format($row['price'], 2, ",", ".")?></td>
-                  <td style="width: 11%;" align="middle"><a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-package&id=<?= $row['id']?>"><i class="far fa-edit"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm(<?=$row['id']?>,'<?=$row['name']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
+                  <td style="width: 11%;" align="middle"><a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-package&id=<?= $row['id']?>"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm(<?=$row['id']?>,'<?=$row['name']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
                 </tr>
                 <?php endwhile; ?>
               </tbody>

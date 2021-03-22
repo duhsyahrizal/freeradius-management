@@ -91,7 +91,7 @@
             <a href="admin.php?task=report" class="nav-link <?= ($_GET['task'] == 'report-data') ? 'active' : '' ?>">
               <i class="nav-icon far fa-file-alt"></i>
               <p>
-                Reports
+                Laporan
               </p>
             </a>
           </li>

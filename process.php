@@ -231,7 +231,7 @@ include('./sql/connection.php');
 
         $queryUserBill = "INSERT INTO user_billing (`username`, `password`, `billing_package_id`, `shared_users`, `bill_price`, `fullname`, `birthdate`, `boarding_house_name`, `telp`, `start_from`, `end_until`) VALUES ('".$username."', '".$password."', $profile, '".$shared_users_bill."', $price, '".$fullname."', '".$date_of_birth."', '".$board_name."', '".$telephone."', '".$start_date."', '".$expired."')";
 
-        $report = "INSERT INTO bill_report (`username`, `payment`, `billing_package_id`, `description`, `price`, `type`, `created_by`, `created_at`) VALUES ('".$username."', '".$payment."', '".$profile."', '".$description."', '".$price."', 'voucher', '".$user_login."', '".$timestamp."')";
+        $report = "INSERT INTO bill_report (`username`, `payment`, `billing_package_id`, `description`, `price`, `type`, `created_by`, `created_at`) VALUES ('".$username."', '".$payment."', '".$profile."', '".$description."', '".$price."', 'Voucher Baru', '".$user_login."', '".$timestamp."')";
 
         // run query user billing
         if ($conn->query($queryUserBill) === TRUE) {
@@ -262,10 +262,12 @@ include('./sql/connection.php');
     else if($action == 'refill') {
       $start_date = date('d M Y H:i:s');
       $refill = date('d M Y H:i:s', strtotime("+30 days"));
-      $username = $_GET['username'];
-      $profile = $_GET['billing_id'];
-      $type = $_GET['type'];
-      $price = $_GET['price'];
+      $username = $_POST['username'];
+      $profile = $_POST['billing_id'];
+      $type = $_POST['type'];
+      $price = $_POST['price'];
+      $payment = $_POST['payment'];
+      $description = isset($_POST['description'])?$_POST['description']:'';
       if($type == 'speed') {
         $queryRefill = "UPDATE radcheck SET `value` = '".$refill."' WHERE attribute = 'Expiration' AND username = '".$username."'";
         $conn->query($queryRefill);
@@ -275,7 +277,7 @@ include('./sql/connection.php');
         $conn->query($queryRefill);
         $conn->query($queryRefillTraffic);
       }
-      $report = "INSERT INTO bill_report (`username`, `payment`, `billing_package_id`, `description`, `price`, `type`, `created_by`, `created_at`) VALUES ('".$username."', 1, $profile, '', $price, 'voucher', '".$user_login."', '".$timestamp."')";
+      $report = "INSERT INTO bill_report (`username`, `payment`, `billing_package_id`, `description`, `price`, `type`, `created_by`, `created_at`) VALUES ('".$username."', $payment, $profile, '".$description."', $price, 'Refill Voucher', '".$user_login."', '".$timestamp."')";
       $conn->query($report);
       $queryRefillBill = "UPDATE user_billing SET `start_from` = '".$start_date."', `end_until` = '".$refill."' WHERE username = '".$username."'";
       if($conn->query($queryRefillBill) === TRUE) {

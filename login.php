@@ -29,7 +29,7 @@
       </div>
       <div>
         <div class="form-group mb-3">
-          <input id="username" name="username" type="text" value="<?= isset($_COOKIE['username'])?$_COOKIE['username']:''?>" class="form-control" placeholder="Username" required>
+          <input id="username" name="username" type="text" value="<?= isset($_COOKIE['username'])?$_COOKIE['username']:''?>" class="form-control" placeholder="Username" required <?= isset($_COOKIE['username'])?'':'autofocus'?>>
           <div class="invalid-feedback">
             Please check again your username
           </div>
@@ -66,7 +66,6 @@
   include('./include/js-plugins.php');
 ?>
 <script>
-  $('#username').focus();
   $("#submit").on('click', function(){
     var username = $("#username").val();
     var password = $("#password").val();
@@ -105,7 +104,7 @@
       var password = $("#password").val();
       var remember = $('#remember').is(":checked");
       $("#submit").removeClass('disabled');
-      $(this).addClass('disabled');
+      $("#submit").addClass('disabled');
       $(".loader").removeClass('d-none');
       // setTimeout(() => {
         $.ajax({

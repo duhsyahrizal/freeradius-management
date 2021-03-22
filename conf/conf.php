@@ -3,7 +3,9 @@ include('./lib/function.php');
 require_once('./lib/routeros_api.class.php');
 
 $date = date("d M Y");
+$monthAgo = date("d-m-y", strtotime("-30 days"));
 $endDate = date("d M Y", strtotime("+30 days"));
+$month = date("d-m-y");
 $created_at = date("H:i:s");
 $option_shared_user = array("unlimited", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 $rate_limits = array(1024,1536,2048,3072,4096,5120,8192, 10240);

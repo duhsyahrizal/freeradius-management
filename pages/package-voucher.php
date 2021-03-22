@@ -63,31 +63,31 @@
 </section>
 <!-- /.Main content -->
 
-    <!-- Modal -->
-    <div class="modal fade" id="modal-voucher">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-          <div class="modal-header bg-brand px-4">
-            <h5 class="modal-title" id="exampleModalLabel">Tambah Bonus Voucher (<span id="name"></span>)</h5>
-          </div>
-          <div class="modal-body px-4">
-            <input type="hidden" id="username">
-            <div class="form-group">
-              <label for="billing">Pilih Paket Billing</label>
-              <select class="custom-select" id="billing">
-              <?php foreach($package as $row) : ?>
-                <option value="<?=$row['name']?>"><?=$row['name']?></option>
-              <?php endforeach ?>
-              </select>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="button" onclick="assignProfile()" class="btn btn-primary btn-brand">Tambahkan</button>
-          </div>
+<!-- Modal -->
+<div class="modal fade" id="modal-bonus">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-brand px-4">
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Bonus Voucher (<span id="name"></span>)</h5>
+      </div>
+      <div class="modal-body px-4">
+        <input type="hidden" id="username">
+        <div class="form-group">
+        <label for="billing">Pilih Paket Billing</label>
+        <select class="custom-select" id="billing">
+        <?php foreach($package as $row) : ?>
+          <option value="<?=$row['name']?>"><?=$row['name']?></option>
+        <?php endforeach ?>
+        </select>
         </div>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" onclick="assignProfile()" class="btn btn-primary btn-brand">Tambahkan</button>
+      </div>
     </div>
+  </div>
+</div>
 
 <script>
 
@@ -113,7 +113,7 @@
     var username = username;
     $('#name').text(username);
     $('#username').val(username);
-    $('#modal-voucher').modal();
+    $('#modal-bonus').modal();
   }
 
   function deleteConfirm(username, groupname){

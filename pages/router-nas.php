@@ -42,7 +42,7 @@
                     <td><?= $row['nasname'] ?></td>
                     <td><?= $row['shortname'] ?></td>
                     <td><?= $row['secret'] ?></td>
-                    <td style="width: 11%;" align="middle"><a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-nas&id=<?= $row['id']?>"><i class="far fa-edit"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm('<?=$row['id']?>','<?=$row['shortname']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
+                    <td style="width: 11%;" align="middle"><a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-nas&id=<?= $row['id']?>"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm('<?=$row['id']?>','<?=$row['shortname']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
                     </tr>
                     <?php 
                       endwhile;

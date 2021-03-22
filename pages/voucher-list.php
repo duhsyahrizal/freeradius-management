@@ -48,7 +48,7 @@
                   <td><span class="badge badge-primary bg-brand"><i class="fas fa-user mr-1"></i> <?= $row['shared_users'] ?></span></td>
                   <td><?= $row['end_until'] ?></td>
                   <td><span class="badge badge-<?= (strtotime($row['end_until']) < time()) ? 'danger' : 'success' ?> px-1 py-1"><i class="fas fa-user-<?= (strtotime($row['end_until']) < time()) ? 'times' : 'check' ?> mr-1"></i> <?= (strtotime($row['end_until']) < time()) ? 'Expired' : 'Tersedia' ?></span></td>
-                  <td class="py-2"><button type="button" class="btn btn-success btn-sm" onclick="refillVoucher('<?=$row['username']?>', '<?=$row['billing_id']?>', '<?=$row['billing_type']?>', '<?=$row['price']?>')"><i class="fas fa-heartbeat"> </i></button> <a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-voucher&username=<?= $row['username']?>"><i class="far fa-edit"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm('<?=$row['username']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
+                  <td class="py-2"><button type="button" class="btn btn-success btn-sm" onclick="openModalVoucher('<?=$row['username']?>', <?=$row['billing_id']?>, '<?=$row['billing_type']?>', <?=$row['price']?>)"><i class="fas fa-heartbeat"> </i></button> <a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-voucher&username=<?= $row['username']?>"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm('<?=$row['username']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
                 </tr>
               <?php 
                 endwhile; 
@@ -70,19 +70,52 @@
 <!-- /.Main content -->
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+<div class="modal fade" id="modal-voucher">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <!-- Modal is redirected to external file (modal_{name}.php) -->
+      <div class="modal-header bg-brand px-4">
+        <h5 class="modal-title" id="exampleModalLabel">Refill Voucher (<span id="voucher"></span>)</h5>
+      </div>
+      <div class="modal-body px-4">
+        <input type="hidden" id="username">
+        <input type="hidden" id="billing_id">
+        <input type="hidden" id="type">
+        <input type="hidden" id="price">
+        <div class="form-group">
+          <label for="payment">Metode Pembayaran</label>
+          <select class="custom-select" id="payment" name="payment">
+            <option value="1">Cash</option>
+            <option value="2">Gratis</option>
+            <option value="3">Transfer</option>
+            <option value="4">Hutang</option>
+          </select>
+        </div>
+        <div id="group-description" class="form-group d-none">
+          <label for="description">Keterangan</label>
+          <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" onclick="refillVoucher()" class="btn btn-primary btn-brand">Refill</button>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
 
-  function getStatus(id){
-    console.log(id);
-  }
+  $("#payment").on("change", function(){
+    $(this).find("option:selected").each(function(){
+      var payment = $(this).attr("value");
+      // alert(payment);
+      if(payment != '1'){
+        $("#group-description").removeClass('d-none');
+      } else{
+        $("#group-description").addClass('d-none');
+      }
+    });
+  });
 
   $(document).ready( function () {
     $('.openModal').on('click', function(){
@@ -97,6 +130,73 @@
       }});
     });
   });
+
+  function openModalVoucher(username, billing_id, type, price){
+    $('#voucher').text(username);
+    $('#username').val(username);
+    $('#billing_id').val(billing_id);
+    $('#type').val(type);
+    $('#price').val(price);
+    $('#modal-voucher').modal();
+  }
+
+  function refillVoucher(){
+    let username = $('#username').val();
+    let billing_id = $('#billing_id').val();
+    let type = $('#type').val();
+    let price = $('#price').val();
+    let payment = $('#payment').val();
+    let description = $('#description').val();
+    Swal.fire({
+      title: 'Refill Voucher',
+      text: "Yakin ingin me-refill voucher ("+username+")?",
+      icon: 'info',
+      showCancelButton: true,
+      cancelButtonText: 'Tidak jadi',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, Refill'
+    }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            method: "POST",
+            url: "./process.php?data=voucher&action=refill",
+            data: {
+              username: username,
+              billing_id: billing_id,
+              type: type,
+              price: price,
+              payment: payment,
+              description: description
+            },
+            success: function(res) {
+              console.log(res)
+              if (res == "success") {
+                Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: 'Success.',
+                  showConfirmButton: false,
+                  timer: 1000
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                      //console.log('I was closed by the timer')
+                      location.reload();
+                    }
+                })
+              }else{
+                console.log(res)
+                Swal.fire(
+                  'Error!',
+                  'Gagal Me-refill voucher.',
+                  'error'
+                )
+              }
+            }
+          })
+        }
+    })
+  }
 
   function deleteConfirm(voucher){
     Swal.fire({
@@ -135,56 +235,6 @@
                 Swal.fire(
                   'Error!',
                   'Gagal Menghapus voucher.',
-                  'error'
-                )
-              }
-            }
-          })
-        }
-    })
-  }
-
-  function refillVoucher(voucher, billing_id, type, price){
-    Swal.fire({
-      title: 'Refill Voucher',
-      text: "Yakin ingin me-refill voucher ("+voucher+")?",
-      icon: 'info',
-      showCancelButton: true,
-      cancelButtonText: 'Tidak jadi',
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Ya, Refill'
-    }).then((result) => {
-        if (result.isConfirmed) {
-          $.ajax({
-            method: "GET",
-            url: "./process.php?data=voucher&action=refill",
-            data: {
-              username: voucher,
-              billing_id: billing_id,
-              type: type,
-              price: price
-            },
-            success: function(res) {
-              console.log(res)
-              if (res == "success") {
-                Swal.fire({
-                  position: 'center',
-                  icon: 'success',
-                  title: 'Success.',
-                  showConfirmButton: false,
-                  timer: 1000
-                }).then((result) => {
-                    if (result.dismiss === Swal.DismissReason.timer) {
-                      //console.log('I was closed by the timer')
-                      location.reload();
-                    }
-                })
-              }else{
-                console.log(res)
-                Swal.fire(
-                  'Error!',
-                  'Gagal Me-refill voucher.',
                   'error'
                 )
               }

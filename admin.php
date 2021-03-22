@@ -59,24 +59,10 @@ function goBack() {
     $('#alltable').DataTable({
       pageLength: 10
     });
-    // $('.openModal').on('click', function(){
-    //   var user_id = $(this).attr('data-id');
-    //   console.log(user_id);
-    //   $.ajax({
-    //     method: "GET",
-    //     url:"./modal/modal_user.php?id="+user_id,
-    //     cache:false,
-    //     success:function(result){
-    //       $(".modal-content").html(result);
-    //   }});
-    // });
   });
 $(document).ready(function(){
   $('#check').click(function(){
     $(this).is(':checked') ? $('#secret').attr('type', 'text') : $('#secret').attr('type', 'password');
-  });
-  $('#report-table').DataTable({
-    pageLength: 25,
   });
 });
 

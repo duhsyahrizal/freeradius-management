@@ -48,10 +48,10 @@ if(isset($_GET['task'])){
         $title = ucfirst($task);
         break;
       case 'report':
-        $title = ucfirst($task);
+        $title = 'Laporan';
         break;
       case 'report-data':
-        $title = 'Report Data';
+        $title = 'Data Laporan';
         break;
     }
 }
