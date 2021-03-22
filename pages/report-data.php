@@ -1,7 +1,7 @@
 <?php
   $start_date = $_GET['start_date'];
   $end_date = $_GET['end_date'];
-  $queryTotal = "SELECT SUM(price) AS total FROM bill_report";
+  $queryTotal = "SELECT SUM(price) AS total FROM bill_report WHERE payment != 2";
   $total = $conn->query($queryTotal);
   $total = $total->fetch_assoc();
   $total = $total['total'];
@@ -111,7 +111,7 @@
                   FROM bill_report
                   JOIN payment_method ON bill_report.payment = payment_method.id
                   JOIN billing_package ON bill_report.billing_package_id = billing_package.id
-                  WHERE created_at BETWEEN '".$start_date."' AND '".$end_date."'";
+                  WHERE payment != 2 AND created_at BETWEEN '".$start_date."' AND '".$end_date."'";
                   $resultReport = $conn->query($sql); 
                   $num = 0;
                   while($row=$resultReport->fetch_assoc()){
