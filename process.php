@@ -278,7 +278,7 @@ include('./sql/connection.php');
       $conn->query($querySharedUsers);
       $conn->query($queryAccount);
       
-      $queryUserBill = "UPDATE user_billing SET `shared_users` = '".$shared_users."', `username` = '".$username."', `password` = '".$password."', `fullname` = '".$fullname."', `birthdate` = '".$date_of_birth."', `boarding_house_name` = '".$boarding_name."', `telp` = '".$telephone."'";
+      $queryUserBill = "UPDATE user_billing SET `shared_users` = '".$shared_users."', `username` = '".$username."', `password` = '".$password."', `fullname` = '".$fullname."', `birthdate` = '".$date_of_birth."', `boarding_house_name` = '".$boarding_name."', `telp` = '".$telephone."' WHERE username = '".$username."'";
       if($conn->query($queryUserBill) === TRUE) {
         echo "New record Account created successfully";
       } else {
