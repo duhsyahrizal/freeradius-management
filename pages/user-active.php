@@ -20,7 +20,7 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <table class="table table-bordered dt-responsive nowrap text-sm" style="width:100%" id="alltable">
+            <table class="table table-bordered dt-responsive nowrap text-sm" style="width:100%" id="monitor-table">
                 <thead>
                     <tr class="bg-brand">
                     <th scope="col">No</th>

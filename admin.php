@@ -60,6 +60,9 @@ function goBack() {
     $('#alltable').DataTable({
       pageLength: 10
     });
+    $('#monitor-table').DataTable({
+      pageLength: 50
+    });
   });
 $(document).ready(function(){
   $('#check').click(function(){
