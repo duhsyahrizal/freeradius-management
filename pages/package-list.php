@@ -15,7 +15,7 @@
             <div class="card-tools">
             <!-- Buttons, labels, and many other things can be placed here! -->
             <!-- Here is a label for example -->
-            <a href="admin.php?task=add-package" class="btn btn-primary btn-brand btn-sm"><i class="fa fa-plus mr-1"></i> Buat Paket</a>
+            <?= ($_SESSION['user'] != 'admin') ? '' : '<a href="admin.php?task=add-package" class="btn btn-primary btn-brand btn-sm"><i class="fa fa-plus mr-1"></i> Buat Paket</a>' ?>
             </div>
             <!-- /.card-tools -->
         </div>
