@@ -25,7 +25,7 @@ $queryAu = "SELECT * FROM radacct WHERE acctstoptime IS NULL GROUP BY framedipad
 $resultActiveUser = $conn->query($queryAu);
 $total_active = $resultActiveUser->num_rows;
 
-$queryUsers = "SELECT billing_package.id AS billing_id, user_billing.id AS user_billing_id, billing_package.*, user_billing.* FROM user_billing JOIN billing_package ON billing_package.id = user_billing.billing_package_id";
+$queryUsers = "SELECT billing_package.id AS billing_id, user_billing.id AS user_billing_id, billing_package.*, user_billing.* FROM user_billing JOIN billing_package ON billing_package.id = user_billing.billing_package_id ORDER BY username ASC";
 $resultUsers = $conn->query($queryUsers);
 
 $queryUserGroups = "SELECT * FROM radusergroup JOIN user_billing ON user_billing.username = radusergroup.username";
