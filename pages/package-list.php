@@ -27,8 +27,9 @@
                   <th style="width: 5%;" class="text-center" scope="col">No</th>
                   <th scope="col">Nama Paket</th>
                   <th scope="col">Volume/Speed</th>
+                  <th scope="col">Tipe Kuota</th>
                   <th scope="col">Harga</th>
-                  <th scope="col">Aksi</th>
+                  <?= ($_SESSION['user'] != 'admin') ? '' : '<th scope="col">Aksi</th>' ?>
                 </tr>
               </thead>
               <tbody>
@@ -47,8 +48,9 @@
                   <td><?=$num?></td>
                   <td><?=$row['name']?></td>
                   <td><?= ($row['billing_type'] == 'speed') ? $updown : $volume ?></td>
+                  <td><?= ucfirst($row['billing_type']) ?></td>
                   <td>Rp. <?=number_format($row['price'], 2, ",", ".")?></td>
-                  <td style="width: 11%;" align="middle"><a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-package&id=<?= $row['id']?>"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm(<?=$row['id']?>,'<?=$row['name']?>','<?=$row['billing_type']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
+                  <?= ($_SESSION['user'] != 'admin') ? '' : '<td style="width: 11%;" align="middle"><a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-package&id='.$row["id"].'"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm('.$row['id'].',`'.$row['name'].'`,`'.$row['billing_type'].'`)"><i class="px-1 far fa-trash-alt"></i></button></td>' ?>
                 </tr>
                 <?php endwhile; ?>
               </tbody>
