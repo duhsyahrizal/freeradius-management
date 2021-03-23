@@ -231,6 +231,10 @@ include('./sql/connection.php');
           }
         }
 
+        $queryAcct = "INSERT INTO radreply (`username`, `attribute`, `op`, `value`) VALUES ('".$name."', 'Acct-Interim-Interval', ':=', '60')";
+        // run query accounting user
+        $conn->query($queryAcct);
+
         $queryUserBill = "INSERT INTO user_billing (`username`, `password`, `billing_package_id`, `shared_users`, `bill_price`, `fullname`, `birthdate`, `boarding_house_name`, `telp`, `start_from`, `end_until`) VALUES ('".$username."', '".$password."', $profile, '".$shared_users_bill."', $price, '".$fullname."', '".$date_of_birth."', '".$board_name."', '".$telephone."', '".$start_date."', '".$expired."')";
 
         $report = "INSERT INTO bill_report (`username`, `payment`, `billing_package_id`, `description`, `price`, `type`, `created_by`, `created_at`) VALUES ('".$username."', '".$payment."', '".$profile."', '".$description."', '".$price."', 'Voucher Baru', '".$user_login."', '".$timestamp."')";
@@ -418,20 +422,14 @@ include('./sql/connection.php');
         } else if($type == 'speed') {
           $upload = $_POST['upload']*1024;
           $download = $_POST['download']*1024;
-          $queryUpload = "INSERT INTO radgroupcheck (`groupname`, `attribute`, `op`, `value`) VALUES ('".$name."', 'WISPr-Bandwidth-Max-Up', ':=', '".$upload."')";
-          $queryDownload = "INSERT INTO radgroupcheck (`groupname`, `attribute`, `op`, `value`) VALUES ('".$name."', 'WISPr-Bandwidth-Max-Down', ':=', '".$download."')";
+          $queryUpload = "INSERT INTO radgroupreply (`groupname`, `attribute`, `op`, `value`) VALUES ('".$name."', 'WISPr-Bandwidth-Max-Up', ':=', '".$upload."')";
+          $queryDownload = "INSERT INTO radgroupreply (`groupname`, `attribute`, `op`, `value`) VALUES ('".$name."', 'WISPr-Bandwidth-Max-Down', ':=', '".$download."')";
           $querySave = "INSERT INTO billing_package (`name`, `limit_upload`, `limit_download`, `billing_type`, `price`) VALUES ('".$name."', $upload, $download, '".$type."', $price)";
           $conn->query($querySave);
           $conn->query($queryUpload);
           $conn->query($queryDownload);
         }
-        $queryAcct = "INSERT INTO radgroupreply (`groupname`, `attribute`, `op`, `value`) VALUES ('".$name."', 'Acct-Interim-Interval', ':=', '60')";
-        // run query accounting user
-        if ($conn->query($queryAcct) === TRUE) {
-          echo "success";
-        } else {
-          echo "failed";
-        }
+        
         header("Location:./admin.php?token=".$_SESSION['token']."&task=package-list");
       } else {
         echo "data tidak ada";
@@ -453,11 +451,17 @@ include('./sql/connection.php');
         $price = $_POST['price'];
         if($type == 'volume') {
           $limit = $_POST['limit']*1048576;
-          $queryUpdate = "UPDATE billing_package SET `package_name` = '".$name."', `package_limit` = $limit, `package_type` = '".$type."' `price` = $price WHERE id = $id";
+          $queryUpdate = "UPDATE billing_package SET `name` = '".$name."', `volume` = $limit, `billing_type` = '".$type."', `price` = $price WHERE id = $id";
+          $queryUpdateGroupDown = "UPDATE radgroupreply SET `groupname` = '".$name."', `value` = '".$download."' WHERE groupname = '".$before_name."' AND attribute = 'WISPr-Bandwidth-Max-Down'";
+          $queryUpdateGroupUp = "UPDATE radgroupreply SET `groupname` = '".$name."', `value` = '".$upload."' WHERE groupname = '".$before_name."' AND attribute = 'WISPr-Bandwidth-Max-Up'";
+          $conn->query($queryUpdateGroupDown);
+          $conn->query($queryUpdateGroupUp);
         } else if($type == 'speed') {
           $upload = $_POST['upload']*1024;
           $download = $_POST['download']*1024;
-          $queryUpdate = "UPDATE billing_package SET `package_name` = '".$name."', `package_limit` = $upload, `package_type` = '".$type."' `price` = $price WHERE id = $id";
+          $queryUpdate = "UPDATE billing_package SET `name` = '".$name."', `limit_upload` = $upload, `limit_download` = $download, `billing_type` = '".$type."', `price` = $price WHERE id = $id";
+          $queryUpdateGroupCheck = "UPDATE radgroupcheck SET `groupname` = '".$name."', `value` = '".$volume."' WHERE groupname = '".$before_name."' AND attribute = 'ChilliSpot-Max-Total-Octets'";
+          $conn->query($queryUpdateGroupCheck);
         }
 
         if($conn->query($queryUpdate) === TRUE) {
@@ -472,7 +476,13 @@ include('./sql/connection.php');
     }
     else if($action == 'delete'){
       $id = $_GET['id'];
+      $groupname = $_GET['name'];
       $queryDelete = "DELETE FROM billing_package WHERE id = $id";
+      $queryDeleteGC = "DELETE FROM radgroupcheck WHERE groupname = '".$groupname."'";
+      $queryDeleteGR = "DELETE FROM radgroupreply WHERE groupname = '".$groupname."'";
+
+      $conn->query($queryDeleteGC);
+      $conn->query($queryDeleteGR);
 
       if ($conn->query($queryDelete) === TRUE) {
         echo "success";

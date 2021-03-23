@@ -48,7 +48,7 @@
                   <td><?=$row['name']?></td>
                   <td><?= ($row['billing_type'] == 'speed') ? $updown : $volume ?></td>
                   <td>Rp. <?=number_format($row['price'], 2, ",", ".")?></td>
-                  <td style="width: 11%;" align="middle"><a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-package&id=<?= $row['id']?>"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm(<?=$row['id']?>,'<?=$row['name']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
+                  <td style="width: 11%;" align="middle"><a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-package&id=<?= $row['id']?>"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm(<?=$row['id']?>,'<?=$row['name']?>','<?=$row['billing_type']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
                 </tr>
                 <?php endwhile; ?>
               </tbody>
@@ -86,7 +86,7 @@
     })
   });
 
-  function deleteConfirm(id, name){
+  function deleteConfirm(id, name, type){
     Swal.fire({
       title: 'Action Delete',
       text: "Are you sure to delete package ("+name+") ?",
@@ -102,6 +102,8 @@
             url: "./process.php?data=package&action=delete",
             data: {
               id: id,
+              name: name,
+              type: type
             },
             success: function(res) {
               if (res == "success") {

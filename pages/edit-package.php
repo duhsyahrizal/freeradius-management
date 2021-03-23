@@ -19,6 +19,7 @@
             <div class="form-row">
               <div class="form-group col-6">
                 <label for="name">Nama Paket</label>
+                <input type="hidden" id="before_name" value="<?=$packages['name']?>">
                 <input type="hidden" id="package_type" value="<?=$packages['billing_type']?>">
                 <input type="text" class="form-control" id="name" name="name" value="<?=$packages['name']?>" autocomplete="off" required>
               </div>
