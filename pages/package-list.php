@@ -106,11 +106,13 @@
               type: type
             },
             success: function(res) {
-              if (res == "success") {
+              let data = JSON.parse(res);
+              if (data.status == "success") {
                 Swal.fire({
                   position: 'center',
                   icon: 'success',
                   title: 'Success.',
+                  text: ""+data.message+"",
                   showConfirmButton: false,
                   timer: 1000
                 }).then((result) => {
@@ -122,7 +124,7 @@
               }else{
                 Swal.fire(
                   'Error!',
-                  'Failed.',
+                  ''+data.message+'',
                   'error'
                 )
               }

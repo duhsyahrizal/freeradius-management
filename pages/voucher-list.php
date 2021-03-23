@@ -170,11 +170,12 @@
               description: description
             },
             success: function(res) {
-              console.log(res)
-              if (res == "success") {
+              let data = JSON.parse(res);
+              if (data.status == "success") {
                 Swal.fire({
                   position: 'center',
                   icon: 'success',
+                  text: ''+data.message+'',
                   title: 'Success.',
                   showConfirmButton: false,
                   timer: 1000
@@ -188,7 +189,7 @@
                 console.log(res)
                 Swal.fire(
                   'Error!',
-                  'Gagal Me-refill voucher.',
+                  ''+data.message+'',
                   'error'
                 )
               }
@@ -217,11 +218,12 @@
               username: voucher,
             },
             success: function(res) {
-              console.log(res);
-              if (res == "success") {
+              let data = JSON.parse(res);
+              if (data.status == "success") {
                 Swal.fire({
                   position: 'center',
                   icon: 'success',
+                  text: ''+data.message+'',
                   title: 'Success.',
                   showConfirmButton: false,
                   timer: 1000
@@ -234,7 +236,7 @@
               }else{
                 Swal.fire(
                   'Error!',
-                  'Gagal Menghapus voucher.',
+                  ''+data.message+'',
                   'error'
                 )
               }

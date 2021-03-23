@@ -208,10 +208,12 @@
               id: id,
             },
             success: function(res) {
-              if (res == "success") {
+              let data = JSON.parse(res);
+              if (data.status == "success") {
                 Swal.fire({
                   position: 'center',
                   icon: 'success',
+                  text: ''+data.message+'',
                   title: 'Success.',
                   showConfirmButton: false,
                   timer: 1000
@@ -224,7 +226,7 @@
               }else{
                 Swal.fire(
                   'Error!',
-                  'Gagal Menghapus router.',
+                  ''+data.message+'',
                   'error'
                 )
               }

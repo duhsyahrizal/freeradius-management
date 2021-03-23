@@ -231,7 +231,7 @@ include('./sql/connection.php');
           }
         }
 
-        $queryAcct = "INSERT INTO radreply (`username`, `attribute`, `op`, `value`) VALUES ('".$name."', 'Acct-Interim-Interval', ':=', '60')";
+        $queryAcct = "INSERT INTO radreply (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'Acct-Interim-Interval', ':=', '60')";
         // run query accounting user
         $conn->query($queryAcct);
 
@@ -315,9 +315,17 @@ include('./sql/connection.php');
       $conn->query($report);
       $queryRefillBill = "UPDATE user_billing SET `start_from` = '".$start_date."', `end_until` = '".$refill."' WHERE username = '".$username."'";
       if($conn->query($queryRefillBill) === TRUE) {
-        echo 'success';
+        $response = ([
+          "status" => "success",
+          "message" => "Berhasil Merefill Voucher ".$username
+        ]);
+        echo json_encode($response);
       } else {
-        echo 'failed';
+        $response = ([
+          "status" => "failed",
+          "message" => $conn->error
+        ]);
+        echo json_encode($response);
       }
     }
     else if($action == 'assign-profile') {
@@ -327,9 +335,17 @@ include('./sql/connection.php');
       $queryBonus = "INSERT INTO radusergroup (`username`, `groupname`, `priority`) VALUES ('".$username."', '".$billing."', 0)";
       
       if($conn->query($queryBonus) === TRUE) {
-        echo 'success';
+        $response = ([
+          "status" => "success",
+          "message" => "Berhasil Menambahkan Bonus Paket ".$username
+        ]);
+        echo json_encode($response);
       } else {
-        echo 'failed';
+        $response = ([
+          "status" => "failed",
+          "message" => $conn->error
+        ]);
+        echo json_encode($response);
       }
 
     }
@@ -338,13 +354,23 @@ include('./sql/connection.php');
       $queryDeleteUserBill = "DELETE FROM user_billing WHERE username = '".$username."'";
       $queryDeleteReply = "DELETE FROM radreply WHERE username = '".$username."'";
       $queryDeleteCheck = "DELETE FROM radcheck WHERE username = '".$username."'";
+      $queryDeleteProfile = "DELETE FROM radusergroup WHERE username = '".$username."'";
 
       $conn->query($queryDeleteUserBill);
       $conn->query($queryDeleteReply);
+      $conn->query($queryDeleteProfile);
       if ($conn->query($queryDeleteCheck) === TRUE) {
-        echo "success";
+        $response = ([
+          "status" => "success",
+          "message" => "Berhasil Menghapus Voucher ".$username
+        ]);
+        echo json_encode($response);
       } else {
-        echo "failed";
+        $response = ([
+          "status" => "failed",
+          "message" => $conn->error
+        ]);
+        echo json_encode($response);
       }
       
     }
@@ -355,9 +381,17 @@ include('./sql/connection.php');
       $queryBonus = "DELETE FROM radusergroup WHERE username = '".$username."' AND groupname = '".$groupname."' AND priority = 0";
       
       if($conn->query($queryBonus) === TRUE) {
-        echo 'success';
+        $response = ([
+          "status" => "success",
+          "message" => "Berhasil Menghapus Bonus Paket ".$username
+        ]);
+        echo json_encode($response);
       } else {
-        echo $conn->error;
+        $response = ([
+          "status" => "failed",
+          "message" => $conn->error
+        ]);
+        echo json_encode($response);
       }
 
     }
@@ -374,6 +408,7 @@ include('./sql/connection.php');
         } else {
           echo "failed";
         }
+
         header("Location:./admin.php?token=".$_SESSION['token']."&task=router-nas");
       } else {
         echo "data tidak ada";
@@ -401,9 +436,17 @@ include('./sql/connection.php');
       $queryDelete = "DELETE FROM nas WHERE id = $id";
 
       if ($conn->query($queryDelete) === TRUE) {
-        echo "success";
+        $response = ([
+          "status" => "success",
+          "message" => "Berhasil Menghapus Router NAS"
+        ]);
+        echo json_encode($response);
       } else {
-        echo "failed";
+        $response = ([
+          "status" => "failed",
+          "message" => $conn->error
+        ]);
+        echo json_encode($response);
       }
     }
   }
@@ -454,6 +497,7 @@ include('./sql/connection.php');
           $queryUpdate = "UPDATE billing_package SET `name` = '".$name."', `volume` = $limit, `billing_type` = '".$type."', `price` = $price WHERE id = $id";
           $queryUpdateGroupDown = "UPDATE radgroupreply SET `groupname` = '".$name."', `value` = '".$download."' WHERE groupname = '".$before_name."' AND attribute = 'WISPr-Bandwidth-Max-Down'";
           $queryUpdateGroupUp = "UPDATE radgroupreply SET `groupname` = '".$name."', `value` = '".$upload."' WHERE groupname = '".$before_name."' AND attribute = 'WISPr-Bandwidth-Max-Up'";
+          
           $conn->query($queryUpdateGroupDown);
           $conn->query($queryUpdateGroupUp);
         } else if($type == 'speed') {
@@ -461,13 +505,22 @@ include('./sql/connection.php');
           $download = $_POST['download']*1024;
           $queryUpdate = "UPDATE billing_package SET `name` = '".$name."', `limit_upload` = $upload, `limit_download` = $download, `billing_type` = '".$type."', `price` = $price WHERE id = $id";
           $queryUpdateGroupCheck = "UPDATE radgroupcheck SET `groupname` = '".$name."', `value` = '".$volume."' WHERE groupname = '".$before_name."' AND attribute = 'ChilliSpot-Max-Total-Octets'";
+          
           $conn->query($queryUpdateGroupCheck);
         }
 
         if($conn->query($queryUpdate) === TRUE) {
-          echo "success";
+          $response = ([
+            "status" => "success",
+            "message" => "Berhasil Update Paket Billing"
+          ]);
+          echo json_encode($response);
         } else {
-          echo "failed";
+          $response = ([
+            "status" => "failed",
+            "message" => "Gagal Update Paket Billing"
+          ]);
+          echo json_encode($response);
         }
         header("Location:./admin.php?token=".$_SESSION['token']."&task=package-list");
       } else {
@@ -477,17 +530,43 @@ include('./sql/connection.php');
     else if($action == 'delete'){
       $id = $_GET['id'];
       $groupname = $_GET['name'];
-      $queryDelete = "DELETE FROM billing_package WHERE id = $id";
-      $queryDeleteGC = "DELETE FROM radgroupcheck WHERE groupname = '".$groupname."'";
-      $queryDeleteGR = "DELETE FROM radgroupreply WHERE groupname = '".$groupname."'";
+      $type = $_GET['type'];
 
-      $conn->query($queryDeleteGC);
-      $conn->query($queryDeleteGR);
+      $checkRelation = "SELECT COUNT(username) AS total FROM radusergroup WHERE groupname = '".$groupname."'";
+      $resRelation = $conn->query($checkRelation);
+      $totalRelation = $resRelation->fetch_assoc();
+      $totalRelation = $totalRelation['total'];
 
-      if ($conn->query($queryDelete) === TRUE) {
-        echo "success";
+      if($totalRelation == 0) {
+        if($type == 'volume') {
+          $queryDeleteRad = "DELETE FROM radgroupcheck WHERE groupname = '".$groupname."'";
+        } else {
+          $queryDeleteRad = "DELETE FROM radgroupreply WHERE groupname = '".$groupname."'";
+        }
+  
+        $queryDelete = "DELETE FROM billing_package WHERE id = $id";
+  
+        $conn->query($queryDeleteRad);
+  
+        if ($conn->query($queryDelete) === TRUE) {
+          $response = ([
+            "status" => "success",
+            "message" => "Berhasil Menghapus Paket Billing"
+          ]);
+          echo json_encode($response);
+        } else {
+          $response = ([
+            "status" => "failed",
+            "message" => $conn->error
+          ]);
+          echo json_encode($response);
+        }
       } else {
-        echo "failed";
+        $response = ([
+          "status" => "failed",
+          "message" => "Data Voucher masih memakai Billing Paket ini"
+        ]);
+        echo json_encode($response);
       }
     }
   }

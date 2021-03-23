@@ -136,10 +136,12 @@
               groupname: groupname
             },
             success: function(res) {
-              if (res == "success") {
+              let data = JSON.parse(res);
+              if (data.status == "success") {
                 Swal.fire({
                   position: 'center',
                   icon: 'success',
+                  text: ''+data.message+'',
                   title: 'Success.',
                   showConfirmButton: false,
                   timer: 1000
@@ -152,7 +154,7 @@
               }else{
                 Swal.fire(
                   'Error!',
-                  'Gagal Menghapus Bonus Paket.',
+                  ''+data.message+'',
                   'error'
                 )
               }
@@ -184,11 +186,12 @@
               billing: billing
             },
             success: function(res) {
-              console.log(res);
-              if (res == "success") {
+              let data = JSON.parse(res);
+              if (data.status == "success") {
                 Swal.fire({
                   position: 'center',
                   icon: 'success',
+                  text: ''+data.message+'',
                   title: 'Success.',
                   showConfirmButton: false,
                   timer: 1000
@@ -201,7 +204,7 @@
               }else{
                 Swal.fire(
                   'Error!',
-                  'Gagal Menambah Bonus Paket.',
+                  ''+data.message+'',
                   'error'
                 )
               }
