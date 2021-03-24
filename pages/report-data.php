@@ -6,7 +6,7 @@
   $total = $total->fetch_assoc();
   $total = $total['total'];
 
-  $queryTotalVoucher = "SELECT COUNT(id) AS jumlah FROM bill_report";
+  $queryTotalVoucher = "SELECT COUNT(id) AS jumlah FROM bill_report WHERE payment != 2";
   $jumlah = $conn->query($queryTotalVoucher);
   $jumlah = $jumlah->fetch_assoc();
   $jumlah = $jumlah['jumlah'];
