@@ -36,6 +36,7 @@ include('./sql/connection.php');
 
       }
       $_SESSION['user'] = $username;
+      $_SESSION['user'] = $username;
       $_SESSION['token'] = $token;
       $sql_insert = "INSERT INTO user_token (`username`, `token`, `modified_at`) VALUES ('".$username."', '".$_SESSION['token']."', '".$timestamp."')";
       $sql_update = "UPDATE user_token set token='".$token."', modified_at='".$timestamp."' WHERE username='".$username."'";
@@ -83,8 +84,8 @@ include('./sql/connection.php');
     session_destroy();
     header("Location:./login.php");
   }
-  else if($data == 'user-bayhost'){
-    if($action == 'edit-user'){
+  else if($data == 'user'){
+    if($action == 'edit'){
       $user_id = $_GET['user_id'];
       $sql = "SELECT 
       bayhost_users.bayhost_user_id,
@@ -101,21 +102,28 @@ include('./sql/connection.php');
       $response = $result->fetch_assoc();
       echo json_encode($response);
     }
-    else if($action == 'update-user'){
+    else if($action == 'update'){
       $user_id = $_POST['user_id'];
       $fullname = $_POST['fullname'];
       $username = $_POST['username'];
       $password = $_POST['password'];
       $group = $_POST['group'];
-      $manage_package = $_POST['manage_package'];
-      $manage_user = $_POST['manage_user'];
+      // $manage_package = $_POST['manage_package'];
+      // $manage_user = $_POST['manage_user'];
       $sqlUser = "UPDATE bayhost_users SET `fullname` = '".$fullname."', `username` = '".$username."', `password` = '".$password."', `role` = $group WHERE bayhost_user_id = $user_id";
-      // $sqlRole = "UPDATE role_group SET `username` = '".$username."', `password` = '".$password."', `role` = ".$group."";
       $result = $conn->query($sqlUser);
       if($result){
-        echo 'success';
+        $response = ([
+          "status" => "success",
+          "message" => "Berhasil merubah data user"
+        ]);
+        echo json_encode($response);
       }else{
-        echo 'failed';
+        $response = ([
+          "status" => "failed",
+          "message" => $conn->error
+        ]);
+        echo json_encode($response);
       }
     }
     else if($action == 'delete'){
@@ -123,9 +131,17 @@ include('./sql/connection.php');
       $sql = "DELETE FROM bayhost_users WHERE bayhost_user_id = $user_id";
       $result = $conn->query($sql);
       if($result){
-        echo 'success';
+        $response = ([
+          "status" => "success",
+          "message" => "Berhasil Menghapus data user"
+        ]);
+        echo json_encode($response);
       }else{
-        echo 'failed';
+        $response = ([
+          "status" => "failed",
+          "message" => $conn->error
+        ]);
+        echo json_encode($response);
       }
     }
   }

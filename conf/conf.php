@@ -101,9 +101,8 @@ if(isset($_GET['task'])){
     case 'report-data':
       include 'pages/report-data.php';
       break;
-      // featured will created
     case 'preference':
-      include 'pages/active-soon.php';
+      include 'pages/manage-user.php';
       break;
     case 'system':
       include 'pages/active-soon.php';

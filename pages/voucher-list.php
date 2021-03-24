@@ -96,8 +96,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         <button type="button" onclick="refillVoucher()" class="btn btn-primary btn-brand">Refill</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>

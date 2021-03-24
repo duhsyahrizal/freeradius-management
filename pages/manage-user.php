@@ -15,7 +15,7 @@
             <div class="card-tools">
             <!-- Buttons, labels, and many other things can be placed here! -->
             <!-- Here is a label for example -->
-            <a href="admin.php?token=<?=$_SESSION['token']?>&task=add-user" class="btn btn-primary btn-sm"><i class="fa fa-user-plus mr-1"></i> Create User</a>
+            <a href="admin.php?task=add-user" class="btn btn-primary btn-brand btn-sm"><i class="fa fa-user-plus mr-1"></i> Create User</a>
             </div>
             <!-- /.card-tools -->
         </div>
@@ -24,43 +24,35 @@
           <div class="table-responsive-sm table-responsive-md">
             <table class="table table-bordered dt-responsive nowrap text-sm" style="width:100%" id="user-table">
               <thead>
-                <tr class="bg-info">
-                  <th scope="col">No</th>
+                <tr class="bg-brand">
+                  <th style="width: 5%;" scope="col">No</th>
                   <th scope="col">Username</th>
-                  <th scope="col">Group</th>
-                  <th scope="col">Manage Package</th>
-                  <th scope="col">Manage Radius User</th>
-                  <th scope="col">Action</th>
+                  <th scope="col">Fullname</th>
+                  <th scope="col">Grup</th>
+                  <th scope="col">Manage Paket</th>
+                  <th scope="col">Manage Voucher</th>
+                  <th scope="col">Aksi</th>
                 </tr>
               </thead>
               <tbody>
               <?php
-                include_once('./sql/connection.php');
-                
-                $conn = new mysqli($servername, $userdb, $passworddb, $database);
-                $sql = "SELECT 
-                bayhost_users.bayhost_user_id,
-                bayhost_users.username,
-                bayhost_users.password,
-                role_group.role_name,
-                role_group.manage_user,
-                role_group.manage_package
-                FROM bayhost_users
+                $sql = "SELECT * FROM bayhost_users
                 INNER JOIN role_group ON role_group.role_group_id = bayhost_users.role";
                 $result = $conn->query($sql);
-                while($row = $result->fetch_assoc()){
-                  
+                $num = 0;
+                while($row = $result->fetch_assoc()) :
                ?>
                 <tr>
                   <td><?= $num=$num+1 ?></td>
                   <td><?= $row['username'] ?></td>
+                  <td><?= $row['fullname'] ?></td>
                   <td><?= $row['role_name'] ?></td>
-                  <td><?= $row['manage_user'] ?></td>
-                  <td><?= $row['manage_package'] ?></td>
-                  <td class="py-2"><button type="button" class="btn btn-light btn-sm openModal" data-id="<?= $row['bayhost_user_id']?>" data-toggle="modal" data-id data-target="#myModal"><i class="far fa-eye"> </i></button> <button type="button" class="btn btn-info btn-sm" onclick="editUser(<?= $row['bayhost_user_id']?>)"><i class="far fa-edit"></i></button> <button class="btn btn-danger btn-sm" onclick="deleteUser('<?=$row['bayhost_user_id']?>','<?=$row['username']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
+                  <td><?= ($row['manage_user'] == 1) ? 'true' : 'false' ?></td>
+                  <td><?= ($row['manage_package'] == 1) ? 'true' : 'false' ?></td>
+                  <td style="width: 11%;" align="middle" class="py-2"><button type="button" class="btn btn-info btn-brand btn-sm" onclick="editUser(<?= $row['bayhost_user_id']?>)"><i class="fas fa-pen"></i></button> <button class="btn btn-danger btn-sm" onclick="deleteUser(<?=$row['bayhost_user_id']?>,'<?=$row['username']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
                </tr>
               <?php 
-                 }
+                 endwhile
               ?>
               </tbody>
             </table>
@@ -82,13 +74,11 @@
 <div class="modal fade" id="modal-edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
-    <div class="modal-header bg-primary">
-      <h5 class="modal-title ml-2" id="exampleModalLabel">Edit User</h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
+    <div class="modal-header bg-brand">
+      <h5 class="modal-title ml-2" id="exampleModalLabel">Edit User (<span id="name"></span>)</h5>
       </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body px-4">
         <div>
           <div class="form-group">
             <label for="fullname">Fullname</label>
@@ -97,7 +87,7 @@
           </div>
           <div class="form-group">
             <label for="user">Username</label>
-            <input type="text" id="user" class="form-control">
+            <input type="text" id="username" class="form-control">
           </div>
           <div class="form-group">
             <label for="pass">Password</label>
@@ -109,15 +99,15 @@
             <?php
             $sqlRole = "SELECT * FROM role_group";
             $resultRole = $conn->query($sqlRole);
-            while($row = $resultRole->fetch_assoc()){ ?>
+            while($row = $resultRole->fetch_assoc()) : ?>
               <option value="<?=$row['role_group_id']?>"><?=$row['role_name']?></option>
-            <?php } ?>
+            <?php endwhile ?>
             </select>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-      <button type="submit" onclick="updateUser()" class="btn btn-primary">Update</button>
+      <button type="submit" onclick="updateUser()" class="btn btn-primary btn-brand">Update</button>
       <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
       </div>
     </div>
@@ -138,16 +128,16 @@
   function editUser(id){
     $.ajax({
       method: "GET",
-      url:"./userman/process.php?action=edit-user&data=user-bayhost",
+      url:"process.php?action=edit&data=user",
       data: {
         user_id: id,
       },
       success:function(res){
-        // console.log(res);
         var obj = JSON.parse(res);
+        $('#name').text(obj.username);
         $('#user_id').val(obj.bayhost_user_id);
         $('#fullname').val(obj.fullname);
-        $('#user').val(obj.username);
+        $('#username').val(obj.username);
         $('#password').val(obj.password);
         $('#manage_user').val(obj.manage_user);
         $('#manage_package').val(obj.manage_package);
@@ -157,31 +147,33 @@
 
   function updateUser() {
     Swal.fire({
-      title: 'Update User?',
-      text: "Apakah Anda yakin ingin merubah data user ini?",
+      title: 'Update User',
+      text: "Apakah Anda yakin ingin merubah user ini?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, do it!'
+      confirmButtonText: 'Ya, simpan!'
     }).then((result) => {
       if (result.isConfirmed) {
         
         $.ajax({
           method: "POST",
-          url: "process.php?action=update-user&data=user-bayhost",
+          url: "process.php?action=update&data=user",
           data: {
             user_id: $("#user_id").val(),
-            username: $("#user").val(),
+            fullname: $("#fullname").val(),
+            username: $("#username").val(),
             password: $("#password").val(),
             group: $("#group").val(),
           },
           success: function(res) {
-            if (res == "success") {
+            let data = JSON.parse(res);
+            if (data.status == "success") {
               Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Berhasil merubah data user.',
+                title: ''+data.message+'',
                 showConfirmButton: false,
                 timer: 1500
               }).then((result) => {
@@ -192,7 +184,7 @@
             }else{
               Swal.fire(
                 'Error!',
-                'Gagal merubah data user.',
+                ''+data.message+'',
                 'error'
               )
             }
@@ -216,7 +208,7 @@
         if (result.isConfirmed) {
           $.ajax({
             method: "POST",
-            url: "./userman/process.php?data=user-bayhost&action=delete-user",
+            url: "process.php?data=user&action=delete",
             data: {
               user_id: id,
             },
