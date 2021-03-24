@@ -22,7 +22,7 @@
   <!-- Sweet alert css -->
   <link rel="stylesheet" href="dist/sweetalert/sweetalert2.min.css">
   <!-- Date Picker -->
-  <link rel="stylesheet" href="dist/css/datepicker.css">
+  <link rel="stylesheet" href="plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- Required for call jQuery -->
   <script src="./plugins/jquery/jquery.min.js"></script>

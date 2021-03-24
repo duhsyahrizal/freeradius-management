@@ -11,12 +11,12 @@
   $jumlah = $jumlah->fetch_assoc();
   $jumlah = $jumlah['jumlah'];
 
-  $queryRefill = "SELECT COUNT(id) AS jumlah FROM bill_report WHERE `type` = 'Refill Voucher'";
+  $queryRefill = "SELECT COUNT(id) AS jumlah FROM bill_report WHERE `type` = 'Refill Voucher' WHERE payment != 2";
   $refill = $conn->query($queryRefill);
   $refill = $refill->fetch_assoc();
   $refill = $refill['jumlah'];
 
-  $queryVBaru = "SELECT COUNT(id) AS jumlah FROM bill_report WHERE `type` = 'Voucher Baru'";
+  $queryVBaru = "SELECT COUNT(id) AS jumlah FROM bill_report WHERE `type` = 'Voucher Baru' WHERE payment != 2";
   $vbaru = $conn->query($queryVBaru);
   $vbaru = $vbaru->fetch_assoc();
   $vbaru = $vbaru['jumlah'];

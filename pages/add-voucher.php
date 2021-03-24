@@ -105,9 +105,8 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="far fa-calendar-alt"></i></span>
                   </div>
-                  <input type="text" class="form-control datepicker" id="start_date" name="start_date" autocomplete="off" aria-describedby="expiredHelp">
+                  <input type="text" class="form-control datepicker px-2" id="start_date" name="start_date" autocomplete="off">
                 </div>
-                <small id="expiredHelp" class="form-text text-muted">Format Date : (<strong>dd-mm-yyyy</strong>). Example : 02-01-2000</small>
               </div>
               <div class="col-6">
                 <label>Tanggal Expired</label>
@@ -115,7 +114,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon2"><i class="far fa-calendar-alt"></i></span>
                   </div>
-                  <input type="text" class="form-control datepicker" id="end_date" name="end_date" autocomplete="off" aria-describedby="expiredHelp">
+                  <input type="text" class="form-control datepicker px-2" id="end_date" name="end_date" autocomplete="off">
                 </div>
               </div>
             </div>
@@ -144,7 +143,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="far fa-calendar-alt"></i></span>
                   </div>
-                  <input placeholder="Pilih tanggal lahir pengguna" type="text" class="form-control datepicker" name="date_of_birth" autocomplete="off" aria-describedby="birthdayHelp">
+                  <input placeholder="Pilih tanggal lahir pengguna" type="text" class="form-control datepicker px-2" name="date_of_birth" autocomplete="off" aria-describedby="birthdayHelp">
                 </div>
               </div>
             </div>
