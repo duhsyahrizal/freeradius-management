@@ -17,7 +17,7 @@
               <div class="inner">
                 <h3><?= $total_router ?></h3>
 
-                <p>Radius Router</p>
+                <p>Router NAS</p>
               </div>
               <div class="icon">
                 <i class="ion ion-nuclear"></i>
@@ -30,9 +30,9 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>6<sup style="font-size: 20px">%</sup></h3>
+                <h3><?= $total_user ?></h3>
 
-                <p>CPU Load</p>
+                <p>Total Voucher</p>
               </div>
               <div class="icon">
                 <i class="ion ion-speedometer"></i>
@@ -47,7 +47,7 @@
               <div class="inner text-white">
                 <h3><?= $total_active ?></h3>
 
-                <p>Active Users</p>
+                <p>Pengguna Aktif</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person"></i>
@@ -60,9 +60,9 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3><?= $total_user ?></h3>
+                <h3><?= $total_account ?></h3>
 
-                <p>All Users</p>
+                <p>Total Akun</p>
               </div>
               <div class="icon">
                 <i class="ion ion-ios-people"></i>

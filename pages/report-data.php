@@ -16,7 +16,7 @@
   $refill = $refill->fetch_assoc();
   $refill = $refill['jumlah'];
 
-  $queryVBaru = "SELECT COUNT(id) AS jumlah FROM bill_report WHERE `type` = 'Voucher Baru' AND payment != 2";
+  $queryVBaru = "SELECT COUNT(id) AS jumlah FROM bill_report WHERE payment = 2";
   $vbaru = $conn->query($queryVBaru);
   $vbaru = $vbaru->fetch_assoc();
   $vbaru = $vbaru['jumlah'];
@@ -43,7 +43,7 @@
       </div>
       <div class="col">
         <div class="callout callout-warning">
-          <h5>Total Voucher Baru</h5>
+          <h5>Total Voucher Gratis</h5>
 
           <p><?=$vbaru?> Voucher</p>
         </div>
@@ -111,7 +111,7 @@
                   FROM bill_report
                   JOIN payment_method ON bill_report.payment = payment_method.id
                   JOIN billing_package ON bill_report.billing_package_id = billing_package.id
-                  WHERE payment != 2 OR created_at BETWEEN '".$start_date."' AND '".$end_date."'";
+                  WHERE created_at BETWEEN '".$start_date."' AND '".$end_date."'";
                   $resultReport = $conn->query($sql); 
                   $num = 0;
                   while($row=$resultReport->fetch_assoc()){

@@ -21,6 +21,10 @@ $queryUser = "SELECT username FROM user_billing";
 $users = $conn->query($queryUser);
 $total_user = $users->num_rows;
 
+$queryAcc = "SELECT username FROM bayhost_users";
+$account = $conn->query($queryAcc);
+$total_account = $account->num_rows;
+
 $queryAu = "SELECT * FROM radacct WHERE acctstoptime IS NULL GROUP BY framedipaddress ORDER BY username ASC";
 $resultActiveUser = $conn->query($queryAu);
 $total_active = $resultActiveUser->num_rows;
