@@ -1,4 +1,5 @@
 <?php
+header('Access-Control-Allow-Origin: *');
 include('../env.php');
 include('../lib/function.php');
     
