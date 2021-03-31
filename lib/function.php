@@ -37,7 +37,7 @@ function showQuota($username) {
     $res = $res['total_quota'];
     if($res == null) return 0;
     
-    return convert_bytes($res, 'M', 0);
+    return convert_bytes($res, 'G', 2);
   }
 
 function secondsToWords($seconds)
