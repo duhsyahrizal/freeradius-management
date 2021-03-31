@@ -111,7 +111,7 @@
                   FROM bill_report
                   JOIN payment_method ON bill_report.payment = payment_method.id
                   JOIN billing_package ON bill_report.billing_package_id = billing_package.id
-                  WHERE payment != 2 AND created_at BETWEEN '".$start_date."' AND '".$end_date."'";
+                  WHERE payment != 2 OR created_at BETWEEN '".$start_date."' AND '".$end_date."'";
                   $resultReport = $conn->query($sql); 
                   $num = 0;
                   while($row=$resultReport->fetch_assoc()){

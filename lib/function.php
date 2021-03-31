@@ -27,6 +27,23 @@ function convert_bytes_without_comm($bytes, $to, $decimal_places = 0) {
     return isset($formulas[$to]) ? $formulas[$to] : 0;
 }
 
+function showQuota($username) {
+    $servername = "localhost";
+    $database = "radius";
+    $userdb = "root";
+    $passworddb = "";
+    // $passworddb = "InovasiBaraya!@";
+    $conn = new mysqli($servername, $userdb, $passworddb, $database);
+
+    $queryQuota = "SELECT SUM(acctinputoctets+acctoutputoctets) AS total_quota FROM radacct WHERE username = '".$username."'";
+    $result = $conn->query($queryQuota);
+    $res = $result->fetch_assoc();
+    $res = $res['total_quota'];
+    if($res == null) return 0;
+    
+    return number_format($res/1048576,0, "", "");
+  }
+
 function secondsToWords($seconds)
 {
     if(empty($seconds)) {

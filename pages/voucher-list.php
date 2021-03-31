@@ -32,7 +32,7 @@
                   <th style="width: 15%;" scope="col">Berbagi Pengguna</th>
                   <th scope="col">Masa Aktif</th>
                   <th scope="col">Status</th>
-                  <th style="width: 14%;" scope="col">Aksi</th>
+                  <th style="width: 17%;" scope="col">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -48,7 +48,7 @@
                   <td><span class="badge badge-primary bg-brand"><i class="fas fa-user mr-1"></i> <?= $row['shared_users'] ?></span></td>
                   <td><?= $row['end_until'] ?></td>
                   <td><span class="badge badge-<?= (strtotime($row['end_until']) < time()) ? 'danger' : 'success' ?> px-1 py-1"><i class="fas fa-user-<?= (strtotime($row['end_until']) < time()) ? 'times' : 'check' ?> mr-1"></i> <?= (strtotime($row['end_until']) < time()) ? 'Expired' : 'Tersedia' ?></span></td>
-                  <td class="py-2"><button type="button" class="btn btn-info btn-sm" onclick="openModalVoucher('<?=$row['username']?>', <?=$row['billing_id']?>, '<?=$row['billing_type']?>', <?=$row['price']?>)"><i class="fas fa-heartbeat"> </i></button> <a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-voucher&username=<?= $row['username']?>"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm('<?=$row['username']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
+                  <td class="py-2"><button type="button" class="btn btn-primary btn-sm" onclick="openModalKuota('<?=$row['username']?>', <?=showQuota($row['username'])?>, '<?=$row['end_until']?>')"><i class="fas fa-info-circle"> </i></button> <button type="button" class="btn btn-info btn-sm" onclick="openModalVoucher('<?=$row['username']?>', <?=$row['billing_id']?>, '<?=$row['billing_type']?>', <?=$row['price']?>)"><i class="fas fa-heartbeat"> </i></button> <a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-voucher&username=<?= $row['username']?>"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm('<?=$row['username']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
                 </tr>
               <?php 
                 endwhile; 
@@ -103,6 +103,37 @@
   </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="modal-detail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+    <div class="modal-header bg-brand">
+      <h5 class="modal-title ml-2" id="exampleModalLabel">Detail Pemakaian (<span id="name"></span>)</h5>
+      </button>
+      </div>
+      <div class="modal-body px-4">
+      <fieldset class="px-3" disabled>
+        <div class="form-group">
+          <label for="disabledTextInput">Username</label>
+          <input type="text" id="detail_username" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="disabledTextInput">Kuota Pemakaian</label>
+          <input type="text" id="kuota" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="disabledTextInput">Masa Aktif</label>
+          <input type="text" id="expired" class="form-control">
+        </div>
+      </fieldset>
+      </div>
+      <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 
   $("#payment").on("change", function(){
@@ -138,6 +169,14 @@
     $('#type').val(type);
     $('#price').val(price);
     $('#modal-voucher').modal();
+  }
+
+  function openModalKuota(username, kuota, expired){
+    $('#name').text(username);
+    $('#detail_username').val(username);
+    $('#kuota').val(kuota+' MB');
+    $('#expired').val(expired);
+    $('#modal-detail').modal();
   }
 
   function refillVoucher(){

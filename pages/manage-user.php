@@ -91,16 +91,17 @@
           </div>
           <div class="form-group">
             <label for="pass">Password</label>
-            <input type="password" id="password" class="form-control">
+            <input type="text" id="password" class="form-control">
           </div>
-          <div class="form-group">
+          <div class="form-group" id="group-select">
             <label for="group">Group</label>
             <select class="custom-select" id="group">
+              <option value="default">Default</option>
             <?php
             $sqlRole = "SELECT * FROM role_group";
             $resultRole = $conn->query($sqlRole);
             while($row = $resultRole->fetch_assoc()) : ?>
-              <option value="<?=$row['role_group_id']?>"><?=$row['role_name']?></option>
+              <option value="<?=$row['role_group_id']?>"><?=ucfirst($row['role_name'])?></option>
             <?php endwhile ?>
             </select>
           </div>
@@ -146,53 +147,57 @@
   }
 
   function updateUser() {
-    Swal.fire({
-      title: 'Update User',
-      text: "Apakah Anda yakin ingin merubah user ini?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Ya, simpan!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        
-        $.ajax({
-          method: "POST",
-          url: "process.php?action=update&data=user",
-          data: {
-            user_id: $("#user_id").val(),
-            fullname: $("#fullname").val(),
-            username: $("#username").val(),
-            password: $("#password").val(),
-            group: $("#group").val(),
-          },
-          success: function(res) {
-            let data = JSON.parse(res);
-            if (data.status == "success") {
-              Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: ''+data.message+'',
-                showConfirmButton: false,
-                timer: 1500
-              }).then((result) => {
-                if (result.dismiss === Swal.DismissReason.timer) {
-                 location.reload();
-                }
-              })
-            }else{
-              Swal.fire(
-                'Error!',
-                ''+data.message+'',
-                'error'
-              )
+    let group_value = $("#group").val();
+    if(group_value != 'default'){
+      Swal.fire({
+        title: 'Update User',
+        text: "Apakah Anda yakin ingin merubah user ini?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, simpan!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            method: "POST",
+            url: "process.php?action=update&data=user",
+            data: {
+              user_id: $("#user_id").val(),
+              fullname: $("#fullname").val(),
+              username: $("#username").val(),
+              password: $("#password").val(),
+              group: $("#group").val(),
+            },
+            success: function(res) {
+              let data = JSON.parse(res);
+              if (data.status == "success") {
+                Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: ''+data.message+'',
+                  showConfirmButton: false,
+                  timer: 1500
+                }).then((result) => {
+                  if (result.dismiss === Swal.DismissReason.timer) {
+                  location.reload();
+                  }
+                })
+              }else{
+                Swal.fire(
+                  'Error!',
+                  ''+data.message+'',
+                  'error'
+                )
+              }
             }
-          }
-        })
-        
-      }
-    })
+          })
+          
+        }
+      })
+    } else {
+      alert('Pilih group terlebih dahulu!')
+    }
   }
 
   function deleteUser(id, username){

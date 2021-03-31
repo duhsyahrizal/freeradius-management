@@ -36,7 +36,6 @@ include('./sql/connection.php');
 
       }
       $_SESSION['user'] = $username;
-      $_SESSION['user'] = $username;
       $_SESSION['token'] = $token;
       $sql_insert = "INSERT INTO user_token (`username`, `token`, `modified_at`) VALUES ('".$username."', '".$_SESSION['token']."', '".$timestamp."')";
       $sql_update = "UPDATE user_token set token='".$token."', modified_at='".$timestamp."' WHERE username='".$username."'";
@@ -137,11 +136,7 @@ include('./sql/connection.php');
         ]);
         echo json_encode($response);
       }else{
-        $response = ([
-          "status" => "failed",
-          "message" => $conn->error
-        ]);
-        echo json_encode($response);
+        echo 'failed';
       }
     }
   }
