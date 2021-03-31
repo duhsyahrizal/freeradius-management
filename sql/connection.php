@@ -1,11 +1,5 @@
 <?php
-
-    $servername = "localhost";
-    $database = "radius";
-    $userdb = "root";
-    $passworddb = "";
-    // $passworddb = "InovasiBaraya!@";
-    
+    include('env.php');
     
     $conn = new mysqli($servername, $userdb, $passworddb, $database);
     
