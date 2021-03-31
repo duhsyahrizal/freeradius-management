@@ -58,7 +58,7 @@ function goBack() {
 
   $(document).ready( function () {
     $('#alltable').DataTable({
-      pageLength: 10
+      pageLength: 25
     });
     $('#monitor-table').DataTable({
       pageLength: 50

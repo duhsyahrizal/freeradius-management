@@ -29,8 +29,8 @@
                   <th scope="col">Username</th>
                   <th scope="col">Fullname</th>
                   <th scope="col">Grup</th>
-                  <th scope="col">Manage Paket</th>
-                  <th scope="col">Manage Voucher</th>
+                  <th style="width: 12%;" scope="col">Manage Paket</th>
+                  <th style="width: 14%;" scope="col">Manage Voucher</th>
                   <th scope="col">Aksi</th>
                 </tr>
               </thead>
@@ -47,8 +47,8 @@
                   <td><?= $row['username'] ?></td>
                   <td><?= $row['fullname'] ?></td>
                   <td><?= $row['role_name'] ?></td>
-                  <td><?= ($row['manage_user'] == 1) ? 'true' : 'false' ?></td>
-                  <td><?= ($row['manage_package'] == 1) ? 'true' : 'false' ?></td>
+                  <td align="middle"><?= ($row['manage_user'] == 1) ? '<span class="badge badge-success"><i class="px-1 py-1 fas fa-check"></i></span>' : '<span class="badge badge-danger"><i class="px-1 py-1 fas fa-times"></i></span>' ?></td>
+                  <td align="middle"><?= ($row['manage_package'] == 1) ? '<span class="badge badge-success"><i class="px-1 py-1 fas fa-check"></i></span>' : '<span class="badge badge-danger"><i class="px-1 py-1 fas fa-times"></i></span>' ?></td>
                   <td style="width: 11%;" align="middle" class="py-2"><button type="button" class="btn btn-info btn-brand btn-sm" onclick="editUser(<?= $row['bayhost_user_id']?>)"><i class="fas fa-pen"></i></button> <button class="btn btn-danger btn-sm" onclick="deleteUser(<?=$row['bayhost_user_id']?>,'<?=$row['username']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
                </tr>
               <?php 
