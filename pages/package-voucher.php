@@ -83,7 +83,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" onclick="assignProfile()" class="btn btn-primary btn-brand">Tambahkan</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
