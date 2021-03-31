@@ -40,7 +40,22 @@ function showQuota($username) {
     $total_quota = ($check_up_gb == '0') ? convert_bytes($res,'M').' MB' : convert_bytes($res,'G').' GB';
     
     return $total_quota;
-  }
+}
+
+function showQuotaUser($username) {
+    include('../env.php');
+    $conn = new mysqli($servername, $userdb, $passworddb, $database);
+
+    $queryQuota = "SELECT SUM(acctinputoctets+acctoutputoctets) AS total_quota FROM radacct WHERE username = '".$username."'";
+    $result = $conn->query($queryQuota);
+    $res = $result->fetch_assoc();
+    $res = $res['total_quota'];
+    if($res == null) return 'Belum memakai';
+    $check_gb = number_format($res/1073741824,0);
+    $total_quota = ($check_gb == '0') ? convert_bytes($res,'M').' MB' : convert_bytes($res,'G').' GB';
+    
+    return $total_quota;
+}
 
 function secondsToWords($seconds)
 {
