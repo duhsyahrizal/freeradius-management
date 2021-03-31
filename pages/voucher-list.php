@@ -175,7 +175,7 @@
   function openModalKuota(username, kuota, expired){
     $('#name').text(username);
     $('#detail_username').val(username);
-    $('#kuota').val(kuota+' MB');
+    $('#kuota').val(kuota);
     $('#expired').val(expired);
     $('#modal-detail').modal();
   }

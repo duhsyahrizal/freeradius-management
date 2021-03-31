@@ -35,9 +35,11 @@ function showQuota($username) {
     $result = $conn->query($queryQuota);
     $res = $result->fetch_assoc();
     $res = $res['total_quota'];
-    if($res == null) return 0;
+    if($res == null) return 'Belum memakai';
+    $check_up_gb = number_format($res/1073741824,0);
+    $total_quota = ($check_up_gb == '0') ? convert_bytes($res,'M').' MB' : convert_bytes($res,'G').' GB';
     
-    return convert_bytes($res, 'M', 0);
+    return $total_quota;
   }
 
 function secondsToWords($seconds)

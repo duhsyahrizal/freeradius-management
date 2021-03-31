@@ -315,10 +315,12 @@ include('./sql/connection.php');
       $description = isset($_POST['description'])?$_POST['description']:'';
       if($type == 'speed') {
         $queryRefill = "UPDATE radcheck SET `value` = '".$refill."' WHERE attribute = 'Expiration' AND username = '".$username."'";
+        $queryRefillTraffic = "UPDATE radacct SET `acctinputoctets` = 0, `acctoutputoctets` = 0 WHERE username = '".$username."'";
         $conn->query($queryRefill);
+        $conn->query($queryRefillTraffic);
       } else {
         $queryRefill = "UPDATE radcheck SET `value` = '".$refill."' WHERE attribute = 'Expiration' AND username = '".$username."'";
-        $queryRefillTraffic = "UPDATE radacct SET `acctinputoctets` = 0, `acctoutputoctets` = 0 WHERE username = '".$username."' AND acctstoptime IS NOT NULL";
+        $queryRefillTraffic = "UPDATE radacct SET `acctinputoctets` = 0, `acctoutputoctets` = 0 WHERE username = '".$username."'";
         $conn->query($queryRefill);
         $conn->query($queryRefillTraffic);
       }
