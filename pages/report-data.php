@@ -120,7 +120,7 @@
                   <tr>
                   <td><?= $num ?></td>
                   <td><?= $row['username'] ?></td>
-                  <td><?= $row['payment_name'] ?></td>
+                  <td><span class="py-1 px-1 badge badge-<?= ($row['payment_name'] == 'Gratis') ? 'warning' : 'primary bg-brand' ?>"><?= $row['payment_name'] ?></span></td>
                   <td><span class="badge <?=($row['report_type'] == 'Voucher Baru') ? 'badge-success' : 'badge-primary bg-brand' ?>"><?=$row['report_type']?></span> - <?= ($row['payment_name'] == 'Cash') ? $row['description'] : $row['report_desc'] ?></td>
                   <td><?= $row['package_name'] ?></td>
                   <td>Rp. <?= number_format($row['price'], 0, ",", ".") ?></td>
