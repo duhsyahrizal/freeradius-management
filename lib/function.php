@@ -28,11 +28,7 @@ function convert_bytes_without_comm($bytes, $to, $decimal_places = 0) {
 }
 
 function showQuota($username) {
-    $servername = "localhost";
-    $database = "radius";
-    $userdb = "root";
-    $passworddb = "";
-    // $passworddb = "InovasiBaraya!@";
+    include('env.php');
     $conn = new mysqli($servername, $userdb, $passworddb, $database);
 
     $queryQuota = "SELECT SUM(acctinputoctets+acctoutputoctets) AS total_quota FROM radacct WHERE username = '".$username."'";
