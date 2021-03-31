@@ -35,7 +35,6 @@
               </p>
             </a>
           </li>
-          
           <li class="nav-header pt-3 pb-1">RADIUS</li>
           <li class="nav-item">
             <a href="admin.php?task=router-nas" class="nav-link <?= ($_GET['task'] == 'add-nas' || $_GET['task'] == 'edit-nas') ? 'active' : '' ?>">
@@ -53,14 +52,6 @@
               </p>
             </a>
           </li>
-          <!-- <li class="nav-item">
-            <a href="admin.php?token=<?=$_SESSION['token']?>&task=voucher" class="nav-link">
-              <i class="nav-icon fas fa-receipt"></i>
-              <p>
-                Voucher
-              </p>
-            </a>
-          </li> -->
           <li class="nav-item">
             <a href="admin.php?task=package-list" class="nav-link  <?= ($_GET['task'] == 'add-package' || $_GET['task'] == 'edit-package') ? 'active' : '' ?>">
               <i class="nav-icon fas fa-user-tag"></i>
@@ -100,15 +91,6 @@
               <i class="nav-icon fas fa-tools"></i>
               <p>
                 Preferences
-              </p>
-            </a>
-          </li>
-          <li class="nav-header pt-3 pb-1">SETTINGS</li>
-          <li class="nav-item has-treeview">
-            <a href="admin.php?task=system" class="nav-link">
-              <i class="nav-icon fas fa-cog"></i>
-              <p>
-                System
               </p>
             </a>
           </li>

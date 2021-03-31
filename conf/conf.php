@@ -108,9 +108,6 @@ if(isset($_GET['task'])){
     case 'preference':
       include 'pages/manage-user.php';
       break;
-    case 'system':
-      include 'pages/active-soon.php';
-      break;
   }
 }
 ?>
