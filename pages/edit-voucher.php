@@ -17,9 +17,10 @@
           <form class="text-sm" action="./process.php?data=voucher&action=update" method="post">
             <div class="form-group">
               <label for="username">Username</label>
+              <input type="hidden" id="username" value="<?=$userbilling['username']?>" name="username">
               <input type="hidden" id="package_type" value="<?=$userbilling['package_type']?>" name="package_type">
               <input type="hidden" id="before_shared_users" value="<?=$userbilling['shared_users']?>" name="before_shared_users">
-              <input type="text" class="form-control" id="username" name="username" value="<?=$username?>" placeholder="Masukkan username untuk voucher billing" autocomplete="off" autofocus required>
+              <input type="text" class="form-control" value="<?=$username?>" disabled>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
