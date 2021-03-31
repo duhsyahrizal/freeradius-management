@@ -121,9 +121,9 @@
                   <td><?= $num ?></td>
                   <td><?= $row['username'] ?></td>
                   <td><?= $row['payment_name'] ?></td>
-                  <td><?=$row['report_type']?> - <?= ($row['payment_name'] == 'Cash') ? $row['description'] : $row['report_desc'] ?></td>
+                  <td><span class="badge <?=($row['report_type'] == 'Voucher Baru') ? 'badge-success' : 'badge-primary bg-brand' ?>"><?=$row['report_type']?></span> - <?= ($row['payment_name'] == 'Cash') ? $row['description'] : $row['report_desc'] ?></td>
                   <td><?= $row['package_name'] ?></td>
-                  <td><?= number_format($row['price'], 0, ",", ".") ?></td>
+                  <td>Rp. <?= number_format($row['price'], 0, ",", ".") ?></td>
                   <td><?= ucfirst($row['created_by']) ?></td>
                   </tr>
                   <?php 
