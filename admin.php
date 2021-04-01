@@ -3,8 +3,8 @@ session_start();
 include('./include/title.php');
 include('./sql/token.php');
 include('./sql/connection.php');
-
-if(empty($_SESSION['token']) || $token_id != $_SESSION['token']){
+$token = $_SESSION['user']['token'];
+if(empty($token) || $token_id != $token){
   echo "<script>";
   echo "window.location.href = './index.php'";
   echo "</script>";

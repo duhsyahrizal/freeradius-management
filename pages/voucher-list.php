@@ -32,7 +32,7 @@
                   <th style="width: 15%;" scope="col">Berbagi Pengguna</th>
                   <th scope="col">Masa Aktif</th>
                   <th scope="col">Status</th>
-                  <th style="width: 17%;" scope="col">Aksi</th>
+                  <th style="width: <?= ($_SESSION['user']['manage_user'] != 1) ? '5%' : '17%' ?>;" scope="col">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -49,7 +49,7 @@
                   <td><span class="badge badge-primary bg-brand"><i class="fas fa-user mr-1"></i> <?= $row['shared_users'] ?></span></td>
                   <td><?= $row['end_until'] ?></td>
                   <td><span class="badge badge-<?= (strtotime($row['end_until']) < time()) ? 'danger' : 'success' ?> px-1 py-1"><i class="fas fa-user-<?= (strtotime($row['end_until']) < time()) ? 'times' : 'check' ?> mr-1"></i> <?= (strtotime($row['end_until']) < time()) ? 'Expired' : 'Tersedia' ?></span></td>
-                  <td class="py-2"><button type="button" class="btn btn-primary btn-sm" onclick="openModalKuota('<?=$row['username']?>', '<?=$quota?>', '<?=$row['end_until']?>')"><i class="fas fa-info-circle"> </i></button> <button type="button" class="btn btn-info btn-sm" onclick="openModalVoucher('<?=$row['username']?>', <?=$row['billing_id']?>, '<?=$row['billing_type']?>', <?=$row['price']?>)"><i class="fas fa-heartbeat"> </i></button> <a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-voucher&username=<?= $row['username']?>"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm('<?=$row['username']?>')"><i class="px-1 far fa-trash-alt"></i></button></td>
+                  <td class="py-2"><button type="button" class="btn btn-primary btn-sm" onclick="openModalKuota('<?=$row['username']?>', '<?=$quota?>', '<?=$row['end_until']?>')"><i class="fas fa-info-circle"> </i></button> <?= ($_SESSION['user']['manage_user'] != 1) ? '' : '<button type="button" class="btn btn-info btn-sm" onclick="openModalVoucher(`'.$row['username'].'`, '.$row['billing_id'].', `'.$row['billing_type'].'`, '.$row['price'].')"><i class="fas fa-heartbeat"> </i></button> <a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-voucher&username='.$row['username'].'"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm(`'.$row['username'].'`)"><i class="px-1 far fa-trash-alt"></i></button>' ?></td>
                 </tr>
               <?php 
                 endwhile; 

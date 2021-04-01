@@ -18,51 +18,50 @@ include('./sql/connection.php');
     $token = openssl_random_pseudo_bytes(16);
     // connection
     // $conn = new mysqli($servername, $userdb, $passworddb, $database);
-    $sql = "SELECT * FROM bayhost_users WHERE `username` = '".$username."' AND `password` = '".$password."'";
+    $sql = "SELECT * FROM bayhost_users INNER JOIN role_group ON role_group.role_group_id = bayhost_users.role WHERE `bayhost_users`.`username` = '".$username."' AND `bayhost_users`.`password` = '".$password."'";
     $time = time();
     $matching = $conn->query($sql);
+    $useracc = $matching->fetch_assoc();
     $check = $matching->num_rows;
-    
+    $fullname = $useracc['fullname'];
+    $role = $useracc['role_name'];
+    $manage_user = $useracc['manage_user'];
+    $manage_paket = $useracc['manage_package'];
 
     //Convert the binary data into hexadecimal representation.
     $token = bin2hex($token);
-    
+
     if($check > 0){
       if($remember == true){
         setcookie("username", $username, $time + 60*60*24*30, '/');
         setcookie("password", $password, $time + 60*60*24*30, '/');
         setcookie("remember", 1, $time + 60*60*24*30, '/');
-      }else{
-
       }
-      $_SESSION['user'] = $username;
-      $_SESSION['token'] = $token;
-      $sql_insert = "INSERT INTO user_token (`username`, `token`, `modified_at`) VALUES ('".$username."', '".$_SESSION['token']."', '".$timestamp."')";
-      $sql_update = "UPDATE user_token set token='".$token."', modified_at='".$timestamp."' WHERE username='".$username."'";
+      $user = ([
+        "username" => $username,
+        "fullname" => $fullname,
+        "role" => $role,
+        "manage_paket" => $manage_paket,
+        "manage_user" => $manage_user,
+        "token" => $token,
+        "remember" => $remember,
+      ]);
+      $_SESSION['user'] = $user;
+
+      $sql_insert = "INSERT INTO user_token (`username`, `token`, `modified_at`) VALUES ('".$username."', '".$token."', '".$timestamp."')";
+      $sql_update = "UPDATE user_token SET token='".$token."', modified_at='".$timestamp."' WHERE username='".$username."'";
       
-      $sql_check_token="SELECT * from user_token where username='".$username."'";
-      // Create connection
-      $connect = new mysqli($servername, $userdb, $passworddb, $database);
+      $sql_check_token="SELECT * FROM user_token WHERE username='".$username."'";
       // Update user token 
-      $result_token = $connect->query($sql_check_token);
+      $result_token = $conn->query($sql_check_token);
 
       if($result_token->num_rows > 0){
         // Update token to table
-        $connect->query($sql_update);
+        $conn->query($sql_update);
       }else{
         // Insert token to table
-        $connect->query($sql_insert);
+        $conn->query($sql_insert);
       }
-      // $member = $matching->fetch_assoc();
-      // $data['username'];
-      // $data['password'];
-      // $data['remember'];
-      // // array_push($data, $member);
-      // array_push($data, $_COOKIE['username']);
-      // array_push($data, $_COOKIE['password']);
-      // array_push($data, $_COOKIE['remember']);
-      // $json = json_encode($data);
-      // echo $json;
       echo 'success';
       // echo '<script language="javascript">';
 			// echo 'alert("Welcome to Bayhost Radius, '.ucfirst($_SESSION['user']).'");';

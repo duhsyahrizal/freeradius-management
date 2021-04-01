@@ -1,5 +1,5 @@
 <?php
-  $sessi_user = $_SESSION['user'];
+  $sessi_user = $_SESSION['user']['username'];
   $sqlSessi = "SELECT role,fullname FROM bayhost_users WHERE username = '".$sessi_user."'";
   $resSessi = $conn->query($sqlSessi);
   $responseSessi = $resSessi->fetch_assoc();
@@ -86,7 +86,7 @@
               </p>
             </a>
           </li>
-          <li class="nav-item <?= ($_SESSION['user'] != 'admin') ? 'd-none' : '' ?>">
+          <li class="nav-item <?= ($sessi_user != 'admin') ? 'd-none' : '' ?>">
             <a href="admin.php?task=preference" class="nav-link">
               <i class="nav-icon fas fa-tools"></i>
               <p>

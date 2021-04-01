@@ -15,7 +15,7 @@
             <div class="card-tools">
             <!-- Buttons, labels, and many other things can be placed here! -->
             <!-- Here is a label for example -->
-            <?= ($_SESSION['user'] != 'admin') ? '' : '<a href="admin.php?task=add-package" class="btn btn-primary btn-brand btn-sm"><i class="fa fa-plus mr-1"></i> Buat Paket</a>' ?>
+            <?= ($_SESSION['user']['manage_paket'] != 1) ? '' : '<a href="admin.php?task=add-package" class="btn btn-primary btn-brand btn-sm"><i class="fa fa-plus mr-1"></i> Buat Paket</a>' ?>
             </div>
             <!-- /.card-tools -->
         </div>
@@ -50,7 +50,7 @@
                   <td><?= ($row['billing_type'] == 'speed') ? $updown : $volume ?></td>
                   <td><?= ucfirst($row['billing_type']) ?></td>
                   <td>Rp. <?=number_format($row['price'], 2, ",", ".")?></td>
-                  <?= ($_SESSION['user'] != 'admin') ? '' : '<td style="width: 11%;" align="middle"><a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-package&id='.$row["id"].'"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm('.$row['id'].',`'.$row['name'].'`,`'.$row['billing_type'].'`)"><i class="px-1 far fa-trash-alt"></i></button></td>' ?>
+                  <?= ($_SESSION['user']['manage_paket'] != 1) ? '' : '<td style="width: 11%;" align="middle"><a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-package&id='.$row["id"].'"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm('.$row['id'].',`'.$row['name'].'`,`'.$row['billing_type'].'`)"><i class="px-1 far fa-trash-alt"></i></button></td>' ?>
                 </tr>
                 <?php endwhile; ?>
               </tbody>

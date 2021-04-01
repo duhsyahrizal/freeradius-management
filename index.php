@@ -4,23 +4,12 @@ include('./sql/token.php');
 date_default_timezone_set('Asia/Jakarta');
 include('./sql/connection.php');
 $url = $_SERVER['REQUEST_URI'];
+$token = $_SESSION['user']['token'];
 
-if(empty($_SESSION['token']) || $token_id != $_SESSION['token']){
+if(empty($token) || $token_id != $token){
   header("Location: ./login.php");
-  // echo '<script language="javascript">';
-  // echo 'window.location.href = "login.php";';
-  // echo '</script>';
-}
-else{
-  // echo '<script language="javascript">';
-	// echo 'alert("Welcome to Bayhost Radius, '.ucfirst($_SESSION['user']).'");';
-	// echo 'window.location.href = "./admin.php?token='.$_SESSION['token'].'&task=dashboard";';
-	// echo '</script>';
+} else {
   header("Location:./admin.php?task=dashboard");
-  // exit();
-  // echo "<script>";
-  // echo "window.location.href = './admin.php?token=".$_SESSION['token']."&page=dashboard'";
-  // echo "</script>";
 }
 ?>
 
