@@ -55,7 +55,7 @@
                 <label for="shared_users">Pilih Berbagi Pengguna</label>
                 <select class="custom-select" id="shared_users" name="shared_users">
                 <?php foreach($option_shared_user as $row) : ?>
-                  <option><?=$row?></option>
+                  <option value="<?=$row?>"><?=$row?></option>
                 <?php endforeach ?>
                 </select>
               </div>
@@ -135,7 +135,7 @@
             <div class="form-row mb-3">
               <div class="col-6">
                 <label for="fullname">Nama Lengkap</label>
-                <input type="text" class="form-control" name="fullname" placeholder="Ketikkan Nama Lengkap">
+                <input type="text" class="form-control" name="fullname" placeholder="Ketikkan Nama Lengkap" required>
               </div>
               <div class="col-6">
                 <label>Tanggal Lahir</label>
@@ -143,7 +143,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="far fa-calendar-alt"></i></span>
                   </div>
-                  <input placeholder="Pilih tanggal lahir pengguna" type="text" class="form-control datepicker px-2" name="date_of_birth" autocomplete="off" aria-describedby="birthdayHelp">
+                  <input placeholder="Pilih tanggal lahir pengguna" type="text" class="form-control datepicker px-2" name="date_of_birth" autocomplete="off" aria-describedby="birthdayHelp" required>
                 </div>
               </div>
             </div>
@@ -203,14 +203,21 @@
         let data = JSON.parse(res);
         let type = data.billing_type;
         let name = data.name;
+        let limit_upload = data.limit_upload;
+        let limit_download = data.limit_download;
 
         $('#package_type').attr('value', type);
         $('#package_name').attr('value', name);
 
         if(type == 'volume') {
+          $('select#upload option[value="2048"]').attr("selected",true);
+          $('select#download option[value="2048"]').attr("selected",true);
+          $('#shared_users').attr("disabled",false);
           $('#upload').removeAttr('disabled');
           $('#download').removeAttr('disabled');
         } else {
+          $('select#shared_users option[value="2"]').attr("selected",true);
+          $('#shared_users').attr("disabled",true);
           $('#upload').attr('disabled', 'disabled');
           $('#download').attr('disabled', 'disabled');
         }
@@ -228,14 +235,22 @@
         let data = JSON.parse(res);
         let type = data.billing_type;
         let name = data.name;
+        let limit_upload = data.limit_upload/1024;
+        let limit_download = data.limit_download/1024;
 
         $('#package_type').attr('value', type);
         $('#package_name').attr('value', name);
 
-        if(type == 'volume') {
+        if(type == 'volume') {;
+          $('select#upload option[value="2048"]').attr("selected",true);
+          $('select#download option[value="2048"]').attr("selected",true);
+          $('select#shared_users option[value="2"]').removeAttr("selected");
+          $('#shared_users').removeAttr("disabled");
           $('#upload').removeAttr('disabled');
           $('#download').removeAttr('disabled');
         } else {
+          $('select#shared_users option[value="2"]').attr("selected",true);
+          $('#shared_users').attr("disabled",true);
           $('#upload').attr('disabled', 'disabled');
           $('#download').attr('disabled', 'disabled');
         }

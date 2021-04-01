@@ -40,6 +40,7 @@
                 $num = 0;
                 while($row = $resultUsers->fetch_assoc()) :
                   $quota = showQuota($row['username']);
+                  $limitation = ($row['billing_type'] == 'volume') ? $row['volume'] : $row['limit_upload'];
                ?>
                 <tr>
                   <td class="text-center"><?= $num=$num+1 ?></td>
@@ -49,7 +50,7 @@
                   <td><span class="badge badge-primary bg-brand"><i class="fas fa-user mr-1"></i> <?= $row['shared_users'] ?></span></td>
                   <td><?= $row['end_until'] ?></td>
                   <td><span class="badge badge-<?= (strtotime($row['end_until']) < time()) ? 'danger' : 'success' ?> px-1 py-1"><i class="fas fa-user-<?= (strtotime($row['end_until']) < time()) ? 'times' : 'check' ?> mr-1"></i> <?= (strtotime($row['end_until']) < time()) ? 'Expired' : 'Tersedia' ?></span></td>
-                  <td class="py-2"><button type="button" class="btn btn-primary btn-sm" onclick="openModalKuota('<?=$row['username']?>', '<?=$quota?>', '<?=$row['end_until']?>')"><i class="fas fa-info-circle"> </i></button> <?= ($_SESSION['user']['manage_user'] != 1) ? '' : '<button type="button" class="btn btn-info btn-sm" onclick="openModalVoucher(`'.$row['username'].'`, '.$row['billing_id'].', `'.$row['billing_type'].'`, '.$row['price'].')"><i class="fas fa-heartbeat"> </i></button> <a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-voucher&username='.$row['username'].'"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm(`'.$row['username'].'`)"><i class="px-1 far fa-trash-alt"></i></button>' ?></td>
+                  <td class="py-2"><button type="button" class="btn btn-primary btn-sm" onclick="openModalKuota('<?=$row['username']?>', '<?=$quota?>', '<?=$row['end_until']?>', '<?=$row['billing_type']?>', <?=$limitation?>)"><i class="fas fa-info-circle"> </i></button> <?= ($_SESSION['user']['manage_user'] != 1) ? '' : '<button type="button" class="btn btn-info btn-sm" onclick="openModalVoucher(`'.$row['username'].'`, '.$row['billing_id'].', `'.$row['billing_type'].'`, '.$row['price'].')"><i class="fas fa-heartbeat"> </i></button> <a class="btn btn-info btn-brand btn-sm" href="./admin.php?task=edit-voucher&username='.$row['username'].'"><i class="fas fa-pen"></i></a> <button class="btn btn-danger btn-sm" onclick="deleteConfirm(`'.$row['username'].'`)"><i class="px-1 far fa-trash-alt"></i></button>' ?></td>
                 </tr>
               <?php 
                 endwhile; 
@@ -123,6 +124,10 @@
           <input type="text" id="kuota" class="form-control">
         </div>
         <div class="form-group">
+          <label for="disabledTextInput" id="text-billing"></label>
+          <input type="text" id="kuota-speed" class="form-control">
+        </div>
+        <div class="form-group">
           <label for="disabledTextInput">Masa Aktif</label>
           <input type="text" id="expired" class="form-control">
         </div>
@@ -172,9 +177,13 @@
     $('#modal-voucher').modal();
   }
 
-  function openModalKuota(username, kuota, expired){
+  function openModalKuota(username, kuota, expired, type, limitation){
+    let limitkuota = (type == 'volume') ? (limitation/1048576)+' MB' : (limitation/1024)+' KB';
+    let billing_type = (type == 'volume') ? 'Kuota' : 'Up/Down';
     $('#name').text(username);
+    $('#text-billing').text(billing_type);
     $('#detail_username').val(username);
+    $('#kuota-speed').val(limitkuota);
     $('#kuota').val(kuota);
     $('#expired').val(expired);
     $('#modal-detail').modal();

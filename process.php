@@ -16,8 +16,6 @@ include('./sql/connection.php');
     $password = $_POST['password'];
     $remember = isset($_POST['remember'])?$_POST['remember']:'';
     $token = openssl_random_pseudo_bytes(16);
-    // connection
-    // $conn = new mysqli($servername, $userdb, $passworddb, $database);
     $sql = "SELECT * FROM bayhost_users INNER JOIN role_group ON role_group.role_group_id = bayhost_users.role WHERE `bayhost_users`.`username` = '".$username."' AND `bayhost_users`.`password` = '".$password."'";
     $time = time();
     $matching = $conn->query($sql);
@@ -63,17 +61,8 @@ include('./sql/connection.php');
         $conn->query($sql_insert);
       }
       echo 'success';
-      // echo '<script language="javascript">';
-			// echo 'alert("Welcome to Bayhost Radius, '.ucfirst($_SESSION['user']).'");';
-			// echo 'window.location.href = "../admin.php?token='.$_SESSION['token'].'&task=dashboard";';
-			// echo '</script>';
-      // header("Location:../admin.php?token='.$_SESSION['token'].'&page=dashboard");
     }else {
       echo 'failed';
-      // echo '<script language="javascript">';
-      // echo 'alert("Please type username and password correctly.");';
-      // echo 'window.location.href = "../index.php";';
-      // echo '</script>';
     }
   }
   else if($action == 'logout'){
@@ -155,10 +144,9 @@ include('./sql/connection.php');
         $groupname = $_POST['package_name'];
         $idletimeout = $_POST['idletimeout'];
         $type = $_POST['package_type'];
-        $volspeed = $_POST['package_limit'];
         $limit_upload = isset($_POST['upload']) ? $_POST['upload']*1024 : null;
         $limit_download = isset($_POST['download']) ? $_POST['download']*1024 : null;
-        $shared_users = !is_null($_POST['shared_users']) ? $_POST['shared_users'] : null;
+        $shared_users = !isset($_POST['shared_users']) ? $_POST['shared_users'] : null;
         $shared_users_bill = !is_null($_POST['shared_users']) ? $_POST['shared_users'] : 'unlimited';
 
         $start_date = $_POST['start_date'];
@@ -215,7 +203,10 @@ include('./sql/connection.php');
         if($type == 'speed'){
           $queryGroup = "INSERT INTO radusergroup (`username`, `groupname`, `priority`) VALUES ('".$username."', '".$groupname."', 1)";
           $querySessTime = "INSERT INTO radcheck (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'Expiration', ':=', '".$expired."')";
-
+          $querySimul = "INSERT INTO radcheck (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'Simultaneous-Use', ':=', '2')";
+          
+          // run query radcheck simultan
+          $conn->query($querySimul);
           // run query radreply speed limit
           $conn->query($queryGroup);
           // run query radcheck expiration time 30 days
@@ -230,6 +221,11 @@ include('./sql/connection.php');
           $queryGroup = "INSERT INTO radusergroup (`username`, `groupname`, `priority`) VALUES ('".$username."', '".$groupname."', 1)";
           $querySessTime = "INSERT INTO radcheck (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'Expiration', ':=', '".$expired."')";
 
+          $queryUpload = "INSERT INTO radreply (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'WISPr-Bandwidth-Max-Up', ':=', $limit_upload)";
+          $queryDownload = "INSERT INTO radreply (`username`, `attribute`, `op`, `value`) VALUES ('".$username."', 'WISPr-Bandwidth-Max-Down', ':=', $limit_download)";
+
+          $conn->query($queryUpload);
+          $conn->query($queryDownload);
           // run query radreply limit total transfer (volume)
           $conn->query($queryGroup);
           // run query radcheck expiration time 30 days
@@ -421,7 +417,7 @@ include('./sql/connection.php');
           echo "failed";
         }
 
-        header("Location:./admin.php?token=".$_SESSION['token']."&task=router-nas");
+        header("Location:./admin.php?task=router-nas");
       } else {
         echo "data tidak ada";
       }
@@ -485,7 +481,7 @@ include('./sql/connection.php');
           $conn->query($queryDownload);
         }
         
-        header("Location:./admin.php?token=".$_SESSION['token']."&task=package-list");
+        header("Location:./admin.php?task=package-list");
       } else {
         echo "data tidak ada";
       }
@@ -534,7 +530,7 @@ include('./sql/connection.php');
           ]);
           echo json_encode($response);
         }
-        header("Location:./admin.php?token=".$_SESSION['token']."&task=package-list");
+        header("Location:./admin.php?task=package-list");
       } else {
         echo "data tidak ada";
       }
