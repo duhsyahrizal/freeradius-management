@@ -29,7 +29,7 @@
                   <th scope="col">Volume/Speed</th>
                   <th scope="col">Tipe Kuota</th>
                   <th scope="col">Harga</th>
-                  <?= ($_SESSION['user'] != 'admin') ? '' : '<th scope="col">Aksi</th>' ?>
+                  <?= ($_SESSION['user']['manage_paket'] != 1) ? '' : '<th scope="col">Aksi</th>' ?>
                 </tr>
               </thead>
               <tbody>
