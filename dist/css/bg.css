@@ -1,0 +1,11 @@
+body {
+  background-image: url('../img/background.png') !important;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.bg-transparent {
+  position: absolute; /* Position the background text */
+  background: rgba(0, 0, 0, 0.309) !important; /* Black background with 0.5 opacity */
+}

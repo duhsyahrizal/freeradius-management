@@ -4,21 +4,25 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Login Page</title>
-  <link rel="shortcut icon" href="customer/img/logo.png">
+  <link rel="shortcut icon" href="dist/img/logo.png">
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="dist/css/bg.css">
   <?php
     include('./include/css-plugins.php');
   ?>
+
   <style type="text/css">
         .error{ color: red; }
         .success{ color: green; }
+        .text-white { color: #fff !important;}
+
     </style>
 </head>
 <body class="hold-transition login-page">
-<div class="login-box">
+<div class="login-box bg-transparent">
   <div class="login-logo">
-    <a href="https://bandungcctv.com"><b>Bayhost</b>Radius</a>
+    <a class="text-white" href="https://bandungcctv.com"><b>Bayhost</b>Radius</a>
   </div>
   <!-- /.login-logo -->
   <div class="card" id="form">
