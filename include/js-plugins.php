@@ -68,7 +68,7 @@
     timePicker: false, //<==MAKE THE CHANGE HERE
     singleDatePicker: true, //<==MAKE THE CHANGE HERE
     locale: {
-      format: 'DD-MM-YYYY'
+      format: 'YYYY-MM-DD'
     }
   })
 </script>

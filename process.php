@@ -6,9 +6,9 @@ include('./sql/connection.php');
 
   $action = $_GET['action'];
   $data = !isset($_GET['data'])?'':$_GET['data'];
-  $timestamp = date('d-m-Y');
+  $timestamp = date('y-m-d');
   if(isset($_SESSION['user'])){
-    $user_login = $_SESSION['user'];
+    $user_login = $_SESSION['user']['username'];
   }
 
   if($action == 'login'){
