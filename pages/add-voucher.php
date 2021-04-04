@@ -129,13 +129,13 @@
             </div>
             <div id="group-description" class="form-group">
               <label for="description">Keterangan</label>
-              <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+              <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
             </div>
             <h6 class="mt-4 mb-2 text-secondary">Informasi Tambahan (Optional)</h6>
             <div class="form-row mb-3">
               <div class="col-6">
                 <label for="fullname">Nama Lengkap</label>
-                <input type="text" class="form-control" name="fullname" placeholder="Ketikkan Nama Lengkap" required>
+                <input type="text" class="form-control" name="fullname" placeholder="Ketikkan Nama Lengkap">
               </div>
               <div class="col-6">
                 <label>Tanggal Lahir</label>
@@ -143,7 +143,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="far fa-calendar-alt"></i></span>
                   </div>
-                  <input placeholder="Pilih tanggal lahir pengguna" type="text" class="form-control datepicker px-2" name="date_of_birth" autocomplete="off" aria-describedby="birthdayHelp" required>
+                  <input placeholder="Pilih tanggal lahir pengguna" type="text" class="form-control datepicker px-2" name="date_of_birth" autocomplete="off" aria-describedby="birthdayHelp">
                 </div>
               </div>
             </div>
