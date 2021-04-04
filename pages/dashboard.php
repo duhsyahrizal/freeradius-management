@@ -214,7 +214,6 @@
                   timer: 1000
                 }).then((result) => {
                     if (result.dismiss === Swal.DismissReason.timer) {
-                      //console.log('I was closed by the timer')
                       location.reload();
                     }
                 })
