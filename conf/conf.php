@@ -22,9 +22,9 @@ $queryUser = "SELECT username FROM user_billing";
 $users = $conn->query($queryUser);
 $total_user = $users->num_rows;
 
-$queryAcc = "SELECT username FROM bayhost_users";
-$account = $conn->query($queryAcc);
-$total_account = $account->num_rows;
+$queryPaket = "SELECT `name` FROM billing_package";
+$paket = $conn->query($queryPaket);
+$total_paket = $paket->num_rows;
 
 $queryAu = "SELECT * FROM radacct WHERE acctstoptime IS NULL GROUP BY framedipaddress ORDER BY username ASC";
 $resultActiveUser = $conn->query($queryAu);

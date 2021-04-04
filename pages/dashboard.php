@@ -30,14 +30,14 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3><?= $total_user ?></h3>
+                <h3><?= $total_paket ?></h3>
 
-                <p>Total Voucher</p>
+                <p>Total Paket</p>
               </div>
               <div class="icon">
                 <i class="ion ion-speedometer"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="admin.php?task=voucher-list" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -50,7 +50,7 @@
                 <p>Pengguna Aktif</p>
               </div>
               <div class="icon">
-                <i class="ion ion-person"></i>
+                <i class="ion ion-ios-people"></i>
               </div>
               <a href="admin.php?task=user-active" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -60,14 +60,14 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3><?= $total_account ?></h3>
+                <h3><?= $total_user ?></h3>
 
-                <p>Total Akun</p>
+                <p>Total Voucher</p>
               </div>
               <div class="icon">
-                <i class="ion ion-ios-people"></i>
+                <i class="ion ion-person"></i>
               </div>
-              <a href="admin.php?task=voucher-list" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="admin.php?task=package-list" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
