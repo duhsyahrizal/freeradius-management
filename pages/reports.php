@@ -25,12 +25,14 @@
           <form action="admin.php?task=report-data" method="get">
             <!-- Date and time range -->
             <input type="hidden" name="task" value="report-data">
-            <div class="form-group">
-              <label for="report_type">Tipe Laporan</label>
-              <select class="custom-select" id="report_type" name="report_type">
-                <option value="semua">Semua</option>
-                <option value="voucher">Voucher</option>
-              </select>
+            <div class="form-row mb-3">
+              <div class="col-3">
+                <label for="report_type">Tipe Laporan</label>
+                <select class="custom-select" id="report_type" name="report_type">
+                  <option value="semua">Semua</option>
+                  <option value="voucher">Voucher</option>
+                </select>
+              </div>
             </div>
             <div class="form-group">
               <label>Start Date</label>
