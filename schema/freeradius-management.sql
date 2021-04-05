@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 04, 2021 at 06:40 PM
+-- Generation Time: Apr 05, 2021 at 04:02 AM
 -- Server version: 10.4.14-MariaDB-log
 -- PHP Version: 7.4.10
 
@@ -40,7 +40,7 @@ CREATE TABLE `bayhost_users` (
 --
 
 INSERT INTO `bayhost_users` (`bayhost_user_id`, `fullname`, `username`, `password`, `role`) VALUES
-(1, 'Admin Bayhost', 'admin', 'ikhlasbayhost', '1'),
+(1, 'Admin Bayhost', 'admin', 'ikhlasb4yhost', '1'),
 (2, 'Operator', 'operator', 'ikhlasop', '2'),
 (3, 'Technical Support', 'teknisi', 'IkhlasTeknisi123', '3');
 
@@ -9644,6 +9644,39 @@ INSERT INTO `dictionary` (`id`, `Type`, `Attribute`, `Value`, `Format`, `Vendor`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `nas`
+--
+
+CREATE TABLE `nas` (
+  `id` int(10) NOT NULL,
+  `nasname` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `shortname` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type` varchar(30) COLLATE utf8_unicode_ci DEFAULT 'other',
+  `ports` int(5) DEFAULT NULL,
+  `secret` varchar(60) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'secret',
+  `server` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `community` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` varchar(200) COLLATE utf8_unicode_ci DEFAULT 'RADIUS Client'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `nas`
+--
+
+INSERT INTO `nas` (`id`, `nasname`, `shortname`, `type`, `ports`, `secret`, `server`, `community`, `description`) VALUES
+(6, '10.1.1.50', 'Concent Palem', 'other', 0, 'zBKQ29J6', '', '', ''),
+(5, '10.1.1.51', 'Concent_GKPN', 'other', 0, 'zBKQ29J6', '', '', ''),
+(7, '10.1.1.52', 'Concent_ALDILLA', 'other', 0, 'zBKQ29J6', '', '', ''),
+(8, '10.1.1.53', 'Concent_Cendana_Wangi', 'other', 0, 'zBKQ29J6', '', '', ''),
+(9, '10.1.1.54', 'Concent_AP ATIKA Bentang', 'other', 0, 'zBKQ29J6', '', '', ''),
+(10, '10.1.1.66', 'Concent Edelweis Cikuda', 'other', 0, 'zBKQ29J6', '', '', ''),
+(11, '10.1.1.57', 'Concent_Pelangi', 'other', 0, 'zBKQ29J6', '', '', ''),
+(12, '10.1.1.61', 'Concent_Boulevard1', 'other', 0, 'zBKQ29J6', '', '', ''),
+(13, '10.1.1.65', 'Concent_Boulevard2', 'other', 0, 'zBKQ29J6', '', '', '');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `payment_method`
 --
 
@@ -9662,6 +9695,177 @@ INSERT INTO `payment_method` (`id`, `name`, `description`) VALUES
 (2, 'Gratis', 'Pembayaran di gratiskan untuk pengelola'),
 (3, 'Transfer', 'Pembayaran dilakukan menggunakan transfer dan harus menyertakan berita pembayaran'),
 (4, 'Hutang', 'Pembayaran dilakukan lain kali dan akan di catat oleh admin bayhost');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `radacct`
+--
+
+CREATE TABLE `radacct` (
+  `radacctid` bigint(21) NOT NULL,
+  `acctsessionid` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `acctuniqueid` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `username` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `realm` varchar(64) COLLATE utf8_unicode_ci DEFAULT '',
+  `nasipaddress` varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `nasportid` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nasporttype` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `acctstarttime` datetime DEFAULT NULL,
+  `acctupdatetime` datetime DEFAULT NULL,
+  `acctstoptime` datetime DEFAULT NULL,
+  `acctsessiontime` int(12) DEFAULT NULL,
+  `acctauthentic` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `connectinfo_start` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `connectinfo_stop` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `acctinputoctets` bigint(20) DEFAULT NULL,
+  `acctoutputoctets` bigint(20) DEFAULT NULL,
+  `calledstationid` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `callingstationid` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `acctterminatecause` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `servicetype` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `framedprotocol` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `framedipaddress` varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `acctstartdelay` int(12) DEFAULT NULL,
+  `acctstopdelay` int(12) DEFAULT NULL,
+  `xascendsessionsvrkey` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `radcheck`
+--
+
+CREATE TABLE `radcheck` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `username` varchar(64) NOT NULL DEFAULT '',
+  `attribute` varchar(64) NOT NULL DEFAULT '',
+  `op` char(2) NOT NULL DEFAULT '==',
+  `value` varchar(253) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `radgroupcheck`
+--
+
+CREATE TABLE `radgroupcheck` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `groupname` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `attribute` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `op` char(2) COLLATE utf8_unicode_ci NOT NULL DEFAULT '==',
+  `value` varchar(253) COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `radgroupreply`
+--
+
+CREATE TABLE `radgroupreply` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `groupname` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `attribute` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `op` char(2) COLLATE utf8_unicode_ci NOT NULL DEFAULT '=',
+  `value` varchar(253) COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `radhuntgroup`
+--
+
+CREATE TABLE `radhuntgroup` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `groupname` varchar(64) NOT NULL DEFAULT '',
+  `nasipaddress` varchar(15) NOT NULL DEFAULT '',
+  `nasportid` varchar(15) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `radippool`
+--
+
+CREATE TABLE `radippool` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `pool_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `framedipaddress` varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `nasipaddress` varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `calledstationid` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `callingstationid` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `expiry_time` datetime DEFAULT NULL,
+  `username` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `pool_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `radpostauth`
+--
+
+CREATE TABLE `radpostauth` (
+  `id` int(11) NOT NULL,
+  `username` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `pass` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `reply` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `authdate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `radreply`
+--
+
+CREATE TABLE `radreply` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `username` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `attribute` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `op` char(2) COLLATE utf8_unicode_ci NOT NULL DEFAULT '=',
+  `value` varchar(253) COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `radusergroup`
+--
+
+CREATE TABLE `radusergroup` (
+  `username` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `groupname` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `priority` int(11) NOT NULL DEFAULT 1
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `realms`
+--
+
+CREATE TABLE `realms` (
+  `id` bigint(20) NOT NULL,
+  `realmname` varchar(128) DEFAULT NULL,
+  `type` varchar(32) DEFAULT NULL,
+  `authhost` varchar(256) DEFAULT NULL,
+  `accthost` varchar(256) DEFAULT NULL,
+  `secret` varchar(128) DEFAULT NULL,
+  `ldflag` varchar(64) DEFAULT NULL,
+  `nostrip` int(8) DEFAULT NULL,
+  `hints` int(8) DEFAULT NULL,
+  `notrealm` int(8) DEFAULT NULL,
+  `creationdate` datetime DEFAULT NULL,
+  `creationby` varchar(128) DEFAULT NULL,
+  `updatedate` datetime DEFAULT NULL,
+  `updateby` varchar(128) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -9749,9 +9953,92 @@ ALTER TABLE `dictionary`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `nas`
+--
+ALTER TABLE `nas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `nasname` (`nasname`);
+
+--
 -- Indexes for table `payment_method`
 --
 ALTER TABLE `payment_method`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `radacct`
+--
+ALTER TABLE `radacct`
+  ADD PRIMARY KEY (`radacctid`),
+  ADD KEY `username` (`username`),
+  ADD KEY `framedipaddress` (`framedipaddress`),
+  ADD KEY `acctsessionid` (`acctsessionid`),
+  ADD KEY `acctsessiontime` (`acctsessiontime`),
+  ADD KEY `acctuniqueid` (`acctuniqueid`),
+  ADD KEY `acctstarttime` (`acctstarttime`),
+  ADD KEY `acctstoptime` (`acctstoptime`),
+  ADD KEY `nasipaddress` (`nasipaddress`);
+
+--
+-- Indexes for table `radcheck`
+--
+ALTER TABLE `radcheck`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `username` (`username`(32));
+
+--
+-- Indexes for table `radgroupcheck`
+--
+ALTER TABLE `radgroupcheck`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `groupname` (`groupname`(32));
+
+--
+-- Indexes for table `radgroupreply`
+--
+ALTER TABLE `radgroupreply`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `groupname` (`groupname`(32));
+
+--
+-- Indexes for table `radhuntgroup`
+--
+ALTER TABLE `radhuntgroup`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `nasipaddress` (`nasipaddress`);
+
+--
+-- Indexes for table `radippool`
+--
+ALTER TABLE `radippool`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `radippool_poolname_expire` (`pool_name`,`expiry_time`),
+  ADD KEY `framedipaddress` (`framedipaddress`),
+  ADD KEY `radippool_nasip_poolkey_ipaddress` (`nasipaddress`,`pool_key`,`framedipaddress`);
+
+--
+-- Indexes for table `radpostauth`
+--
+ALTER TABLE `radpostauth`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `radreply`
+--
+ALTER TABLE `radreply`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `username` (`username`(32));
+
+--
+-- Indexes for table `radusergroup`
+--
+ALTER TABLE `radusergroup`
+  ADD KEY `username` (`username`(32));
+
+--
+-- Indexes for table `realms`
+--
+ALTER TABLE `realms`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -9801,10 +10088,70 @@ ALTER TABLE `dictionary`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9718;
 
 --
+-- AUTO_INCREMENT for table `nas`
+--
+ALTER TABLE `nas`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
 -- AUTO_INCREMENT for table `payment_method`
 --
 ALTER TABLE `payment_method`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `radacct`
+--
+ALTER TABLE `radacct`
+  MODIFY `radacctid` bigint(21) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `radcheck`
+--
+ALTER TABLE `radcheck`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `radgroupcheck`
+--
+ALTER TABLE `radgroupcheck`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `radgroupreply`
+--
+ALTER TABLE `radgroupreply`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `radhuntgroup`
+--
+ALTER TABLE `radhuntgroup`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `radippool`
+--
+ALTER TABLE `radippool`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `radpostauth`
+--
+ALTER TABLE `radpostauth`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `radreply`
+--
+ALTER TABLE `radreply`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `realms`
+--
+ALTER TABLE `realms`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `role_group`
