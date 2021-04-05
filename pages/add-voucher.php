@@ -129,7 +129,7 @@
             </div>
             <div id="group-description" class="form-group">
               <label for="description">Keterangan</label>
-              <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+              <textarea class="form-control" id="description" name="description" rows="3"></textarea>
             </div>
             <h6 class="mt-4 mb-2 text-secondary">Informasi Tambahan (Optional)</h6>
             <div class="form-row mb-3">
@@ -185,8 +185,10 @@
       // alert(payment);
       if(payment != '1'){
         $("#group-description").show();
+        $("#group-description").prop('required',true);
       } else{
         $("#group-description").hide();
+        $("#group-description").prop('required',false);
       }
     });
   });
