@@ -176,7 +176,7 @@ include('./sql/connection.php');
         $limit_upload = isset($_POST['upload']) ? $_POST['upload']*1024 : null;
         $limit_download = isset($_POST['download']) ? $_POST['download']*1024 : null;
         $shared_users = !isset($_POST['shared_users']) ? $_POST['shared_users'] : null;
-        $shared_users_bill = !is_null($_POST['shared_users']) ? $_POST['shared_users'] : 'unlimited';
+        $shared_users_bill = !is_null($_POST['shared_users']) ? $_POST['shared_users'] : '2';
 
         $start_date = $_POST['start_date'];
         $start_from = date_create($start_date);
