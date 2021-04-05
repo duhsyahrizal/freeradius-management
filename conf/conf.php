@@ -109,6 +109,9 @@ if(isset($_GET['task'])){
     case 'report-data':
       include 'pages/report-data.php';
       break;
+    case 'action-report-data':
+      include 'pages/action-report-data.php';
+      break;
     case 'preference':
       include 'pages/manage-user.php';
       break;
