@@ -29,8 +29,8 @@
                   <th scope="col">Username</th>
                   <th scope="col">Fullname</th>
                   <th scope="col">Grup</th>
-                  <th style="width: 12%;" scope="col">Manage Paket</th>
-                  <th style="width: 14%;" scope="col">Manage Voucher</th>
+                  <th style="width: 12%;" scope="col">Manage Voucher</th>
+                  <th style="width: 14%;" scope="col">Manage Paket</th>
                   <th scope="col">Aksi</th>
                 </tr>
               </thead>
