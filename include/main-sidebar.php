@@ -87,7 +87,7 @@
             </a>
           </li>
           <li class="nav-item <?= ($sessi_user != 'admin') ? 'd-none' : '' ?>">
-            <a href="admin.php?task=preference" class="nav-link">
+            <a href="admin.php?task=preference" class="nav-link <?= ($_GET['task'] == 'add-user') ? 'active' : '' ?>">
               <i class="nav-icon fas fa-tools"></i>
               <p>
                 Preferences

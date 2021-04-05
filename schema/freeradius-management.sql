@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 05, 2021 at 04:02 AM
+-- Generation Time: Apr 05, 2021 at 05:26 AM
 -- Server version: 10.4.14-MariaDB-log
 -- PHP Version: 7.4.10
 
@@ -24,6 +24,20 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `action_report`
+--
+
+CREATE TABLE `action_report` (
+  `id` int(11) NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_by` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `bayhost_users`
 --
 
@@ -40,7 +54,7 @@ CREATE TABLE `bayhost_users` (
 --
 
 INSERT INTO `bayhost_users` (`bayhost_user_id`, `fullname`, `username`, `password`, `role`) VALUES
-(1, 'Admin Bayhost', 'admin', 'ikhlasb4yhost', '1'),
+(1, 'Admin Bayhost', 'admin', 'ikhlasb4yh0st', '1'),
 (2, 'Operator', 'operator', 'ikhlasop', '2'),
 (3, 'Technical Support', 'teknisi', 'IkhlasTeknisi123', '3');
 
@@ -9928,6 +9942,12 @@ CREATE TABLE `user_token` (
 --
 
 --
+-- Indexes for table `action_report`
+--
+ALTER TABLE `action_report`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `bayhost_users`
 --
 ALTER TABLE `bayhost_users`
@@ -10064,10 +10084,16 @@ ALTER TABLE `user_token`
 --
 
 --
+-- AUTO_INCREMENT for table `action_report`
+--
+ALTER TABLE `action_report`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `bayhost_users`
 --
 ALTER TABLE `bayhost_users`
-  MODIFY `bayhost_user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `bayhost_user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `billing_package`

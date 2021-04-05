@@ -6,7 +6,7 @@ include('./sql/connection.php');
 
   $action = $_GET['action'];
   $data = !isset($_GET['data'])?'':$_GET['data'];
-  $timestamp = date('y-m-d');
+  $timestamp = date('Y-m-d');
   if(isset($_SESSION['user'])){
     $user_login = $_SESSION['user']['username'];
   }
@@ -72,7 +72,26 @@ include('./sql/connection.php');
     header("Location:./login.php");
   }
   else if($data == 'user'){
-    if($action == 'edit'){
+    if($action == 'save'){
+      $username = $_POST['username'];
+      $fullname = $_POST['fullname'];
+      $password = $_POST['password'];
+      $role = $_POST['group'];
+
+      $action_report = "INSERT INTO action_report (`description`, `type`, `created_by`, `created_at`) VALUES ('Menambahkan User ".$username."', 'Akses Login', '".$user_login."', '".$timestamp."')";
+      $conn->query($action_report);
+
+      $sqlUser = "INSERT INTO bayhost_users (`fullname`, `username`, `password`, `role`) VALUES ('".$fullname."', '".$username."', '".$password."', '".$role."')";
+      if($conn->query($sqlUser) === TRUE) {
+        echo "success";
+      } else {
+        echo "failed";
+      }
+
+      header("Location:./admin.php?task=preference");
+      
+    }
+    else if($action == 'edit'){
       $user_id = $_GET['user_id'];
       $sql = "SELECT 
       bayhost_users.bayhost_user_id,
@@ -95,8 +114,10 @@ include('./sql/connection.php');
       $username = $_POST['username'];
       $password = $_POST['password'];
       $group = $_POST['group'];
-      // $manage_package = $_POST['manage_package'];
-      // $manage_user = $_POST['manage_user'];
+
+      $action_report = "INSERT INTO action_report (`description`, `type` `created_by`, `created_at`) VALUES ('Mengupdate User ".$username."', 'Akses Login', '".$user_login."', '".$timestamp."')";
+      $conn->query($action_report);
+
       $sqlUser = "UPDATE bayhost_users SET `fullname` = '".$fullname."', `username` = '".$username."', `password` = '".$password."', `role` = $group WHERE bayhost_user_id = $user_id";
       $result = $conn->query($sqlUser);
       if($result){
@@ -115,6 +136,14 @@ include('./sql/connection.php');
     }
     else if($action == 'delete'){
       $user_id = $_POST['user_id'];
+      $queryuser = "SELECT username FROM bayhost_users WHERE bayhost_user_id = ".$user_id;
+      $res = $conn->query($queryuser);
+      $user = $res->fetch_assoc();
+      $user = $user['username'];
+
+      $action_report = "INSERT INTO action_report (`description`, `type`, `created_by`, `created_at`) VALUES ('Menghapus User ".$user."', 'Akses Login', '".$user_login."', '".$timestamp."')";
+      $conn->query($action_report);
+
       $sql = "DELETE FROM bayhost_users WHERE bayhost_user_id = $user_id";
       $result = $conn->query($sql);
       if($result){
@@ -158,8 +187,6 @@ include('./sql/connection.php');
         $start_hour = $_POST['start_hour'];
         $expired = $end_date.' '.$start_hour;
         $start_date = $start_date.' '.$start_hour;
-        // Attrib Max-All-Session
-        $session_time = $total_days*24*60*60;
 
         $payment = $_POST['payment'];
         switch($_POST['payment']){
@@ -244,6 +271,8 @@ include('./sql/connection.php');
         $queryUserBill = "INSERT INTO user_billing (`username`, `password`, `billing_package_id`, `shared_users`, `bill_price`, `fullname`, `birthdate`, `boarding_house_name`, `telp`, `start_from`, `end_until`) VALUES ('".$username."', '".$password."', $profile, '".$shared_users_bill."', $price, '".$fullname."', '".$date_of_birth."', '".$board_name."', '".$telephone."', '".$start_date."', '".$expired."')";
 
         $report = "INSERT INTO bill_report (`username`, `payment`, `billing_package_id`, `description`, `price`, `type`, `created_by`, `created_at`) VALUES ('".$username."', '".$payment."', '".$profile."', '".$description."', '".$price."', 'Voucher Baru', '".$user_login."', '".$timestamp."')";
+        $action_report = "INSERT INTO action_report (`description`, `type` `created_by`, `created_at`) VALUES ('Menambahkan Voucher ".$username."', 'Voucher', '".$user_login."', '".$timestamp."')";
+        $conn->query($action_report);
 
         // run query user billing
         if ($conn->query($queryUserBill) === TRUE) {
@@ -256,7 +285,7 @@ include('./sql/connection.php');
         if ($conn->query($report) === TRUE) {
           echo "New record Account created successfully";
         } else {
-          echo "Error: " . $sql . "<br>" . $conn->error;
+          echo "Error: " . $report . "<br>" . $conn->error;
         }
 
         header("Location:./admin.php?task=voucher-list");
@@ -289,6 +318,9 @@ include('./sql/connection.php');
       
       $conn->query($querySharedUsers);
       $conn->query($queryAccount);
+
+      $action_report = "INSERT INTO action_report (`description`, `type` `created_by`, `created_at`) VALUES ('Mengupdate Voucher ".$username."', 'Voucher', '".$user_login."', '".$timestamp."')";
+      $conn->query($action_report);
       
       $queryUserBill = "UPDATE user_billing SET `shared_users` = '".$shared_users."', `username` = '".$username."', `password` = '".$password."', `fullname` = '".$fullname."', `birthdate` = '".$date_of_birth."', `boarding_house_name` = '".$boarding_name."', `telp` = '".$telephone."' WHERE username = '".$username."'";
       if($conn->query($queryUserBill) === TRUE) {
@@ -321,6 +353,10 @@ include('./sql/connection.php');
       }
       $report = "INSERT INTO bill_report (`username`, `payment`, `billing_package_id`, `description`, `price`, `type`, `created_by`, `created_at`) VALUES ('".$username."', $payment, $profile, '".$description."', $price, 'Refill Voucher', '".$user_login."', '".$timestamp."')";
       $conn->query($report);
+
+      $action_report = "INSERT INTO action_report (`description`, `type` `created_by`, `created_at`) VALUES ('Merefill Voucher ".$username."', 'Voucher', '".$user_login."', '".$timestamp."')";
+      $conn->query($action_report);
+
       $queryRefillBill = "UPDATE user_billing SET `start_from` = '".$start_date."', `end_until` = '".$refill."' WHERE username = '".$username."'";
       if($conn->query($queryRefillBill) === TRUE) {
         $response = ([
@@ -341,6 +377,9 @@ include('./sql/connection.php');
       $billing = $_POST['billing'];
 
       $queryBonus = "INSERT INTO radusergroup (`username`, `groupname`, `priority`) VALUES ('".$username."', '".$billing."', 0)";
+
+      $action_report = "INSERT INTO action_report (`description`, `type` `created_by`, `created_at`) VALUES ('Menambahkan Bonus Paket untuk Voucher ".$username."', 'Voucher', '".$user_login."', '".$timestamp."')";
+      $conn->query($action_report);
       
       if($conn->query($queryBonus) === TRUE) {
         $response = ([
@@ -367,6 +406,10 @@ include('./sql/connection.php');
       $conn->query($queryDeleteUserBill);
       $conn->query($queryDeleteReply);
       $conn->query($queryDeleteProfile);
+      
+      $action_report = "INSERT INTO action_report (`description`, `type` `created_by`, `created_at`) VALUES ('Menghapus Voucher ".$username."', 'Voucher', '".$user_login."', '".$timestamp."')";
+      $conn->query($action_report);
+
       if ($conn->query($queryDeleteCheck) === TRUE) {
         $response = ([
           "status" => "success",
@@ -387,6 +430,9 @@ include('./sql/connection.php');
       $groupname = $_GET['groupname'];
 
       $queryBonus = "DELETE FROM radusergroup WHERE username = '".$username."' AND groupname = '".$groupname."' AND priority = 0";
+
+      $action_report = "INSERT INTO action_report (`description`, `type` `created_by`, `created_at`) VALUES ('Menghapus Bonus Paket ".$groupname." untuk Voucher ".$username."', 'Voucher', '".$user_login."', '".$timestamp."')";
+      $conn->query($action_report);
       
       if($conn->query($queryBonus) === TRUE) {
         $response = ([
@@ -410,6 +456,10 @@ include('./sql/connection.php');
         $nasname = $_POST['nasname'];
         $shortname = $_POST['shortname'];
         $secret = $_POST['secret'];
+
+        $action_report = "INSERT INTO action_report (`description`, `type` `created_by`, `created_at`) VALUES ('Menambahkan Router ".$nasname."', 'Router NAS', '".$user_login."', '".$timestamp."')";
+        $conn->query($action_report);
+
         $querySave = "INSERT INTO nas (`nasname`, `shortname`, `type`, `ports`, `secret`) VALUES ('".$nasname."', '".$shortname."', 'other', 0, '".$secret."')";
         if ($conn->query($querySave) === TRUE) {
           echo "success";
@@ -428,6 +478,10 @@ include('./sql/connection.php');
         $nasname = $_POST['nasname'];
         $shortname = $_POST['shortname'];
         $secret = $_POST['secret'];
+
+        $action_report = "INSERT INTO action_report (`description`, `type` `created_by`, `created_at`) VALUES ('Mengupdate Router ".$username."', 'Router NAS', '".$user_login."', '".$timestamp."')";
+        $conn->query($action_report);
+
         $queryUpdate = "UPDATE nas SET `nasname` = '".$nasname."', `secret` = '".$secret."', `shortname` = '".$shortname."' WHERE id = $id";
         if($conn->query($queryUpdate) === TRUE) {
           echo "success";
@@ -442,6 +496,13 @@ include('./sql/connection.php');
     else if($action == 'delete'){
       $id = $_GET['id'];
       $queryDelete = "DELETE FROM nas WHERE id = $id";
+      $queryNas = "SELECT nasname FROM nas WHERE id = ".$id;
+      $res = $conn->query($queryNas);
+      $nasname = $res->fetch_assoc();
+      $nasname = $nasname['nasname'];
+
+      $action_report = "INSERT INTO action_report (`description`, `type` `created_by`, `created_at`) VALUES ('Menghapus Router ".$nasname."', 'Router NAS', '".$user_login."', '".$timestamp."')";
+      $conn->query($action_report);
 
       if ($conn->query($queryDelete) === TRUE) {
         $response = ([
@@ -480,6 +541,9 @@ include('./sql/connection.php');
           $conn->query($queryUpload);
           $conn->query($queryDownload);
         }
+
+        $action_report = "INSERT INTO action_report (`description`, `type` `created_by`, `created_at`) VALUES ('Menambahkan Paket Billing ".$name."', 'Paket Billing', '".$user_login."', '".$timestamp."')";
+        $conn->query($action_report);
         
         header("Location:./admin.php?task=package-list");
       } else {
@@ -516,6 +580,9 @@ include('./sql/connection.php');
           
           $conn->query($queryUpdateGroupCheck);
         }
+
+        $action_report = "INSERT INTO action_report (`description`, `type` `created_by`, `created_at`) VALUES ('Mengupdate Paket ".$name."', 'Paket Billing', '".$user_login."', '".$timestamp."')";
+        $conn->query($action_report);
 
         if($conn->query($queryUpdate) === TRUE) {
           $response = ([
@@ -555,6 +622,9 @@ include('./sql/connection.php');
         $queryDelete = "DELETE FROM billing_package WHERE id = $id";
   
         $conn->query($queryDeleteRad);
+
+        $action_report = "INSERT INTO action_report (`description`, `type` `created_by`, `created_at`) VALUES ('Menghapus Paket ".$groupname."', 'Paket Billing', '".$user_login."', '".$timestamp."')";
+        $conn->query($action_report);
   
         if ($conn->query($queryDelete) === TRUE) {
           $response = ([

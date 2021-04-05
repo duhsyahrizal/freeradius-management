@@ -15,7 +15,7 @@ if(isset($_GET['task'])){
         $title = 'Edit Nas';
         break;
       case 'add-nas':
-        $title = 'New Nas';
+        $title = 'Buat Nas';
         break;
       case 'add-voucher':
         $title = 'Buat Voucher baru';
@@ -34,6 +34,9 @@ if(isset($_GET['task'])){
         break;
       case 'assign-package':
         $title = 'Bonus Paket';
+        break;
+      case 'add-user':
+        $title = 'Buat User';
         break;
       case 'user-active':
         $title = 'Monitor Online';

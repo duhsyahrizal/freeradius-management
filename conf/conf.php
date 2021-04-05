@@ -97,6 +97,9 @@ if(isset($_GET['task'])){
     case 'assign-package':
       include 'pages/package-voucher.php';
       break;
+    case 'add-user':
+      include 'pages/add-user.php';
+      break;
     case 'user-active':
       include 'pages/user-active.php';
       break;
