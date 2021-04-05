@@ -3,6 +3,14 @@ $start_date = $_GET['start_date'];
 $end_date = $_GET['end_date'];
 
 ?>
+  <div class="container-fluid">
+    <div class="row px-2">
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+        <h1 class="m-0 text-dark"><?=$title?></h1>
+      </div>
+    </div>
+  </div>
 <?php if($_GET['report_type'] == 'voucher') : ?>
   <?php
     $queryTotal = "SELECT SUM(price) AS total FROM bill_report WHERE payment != 2";
@@ -25,15 +33,6 @@ $end_date = $_GET['end_date'];
     $vbaru = $vbaru->fetch_assoc();
     $vbaru = $vbaru['jumlah'];
   ?>
-  <div class="container-fluid">
-    <div class="row px-2">
-      <!-- Content Header (Page header) -->
-      <div class="content-header">
-        <h1 class="m-0 text-dark"><?=$title?></h1>
-      </div>
-    </div>
-  </div>
-
   <!-- /.Main content -->
   <section class="content px-2">
     <div class="container-fluid">
