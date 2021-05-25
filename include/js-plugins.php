@@ -71,4 +71,49 @@
       format: 'YYYY-MM-DD'
     }
   })
+
+  var ctx = document.getElementById("reportChart").getContext('2d');
+  var myChart = new Chart(ctx, {
+			type: 'pie',
+			data: {
+        labels: [
+          'Unlimited',
+          'Kuota',
+        ],
+        datasets: [{
+          label: 'Report Chart',
+          data: [5, 2],
+          backgroundColor: [
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)'
+          ],
+          hoverOffset: 4
+        }]
+			},
+      options: {
+        animation: {
+            duration: 1000,
+        },
+      }
+	});
+
+  var ctx = document.getElementById("statisticOnline").getContext('2d');
+  var myChart = new Chart(ctx, {
+			type: 'line',
+			data: {
+        labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        datasets: [{
+          label: 'Statistic Online User',
+          data: [13, 7, 10, 8, 5, 9, 15],
+          fill: false,
+          borderColor: 'rgb(17, 110, 179)',
+          tension: 0.1
+        }]
+			},
+      options: {
+        animation: {
+            duration: 1000,
+        },
+      }
+	});
 </script>

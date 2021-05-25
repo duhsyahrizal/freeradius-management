@@ -22,7 +22,7 @@ if(empty($token) || $token_id != $token){
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php include("include/css-plugins.php"); ?>
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed layout-footer-fixed">
 <div class="wrapper">
 
   

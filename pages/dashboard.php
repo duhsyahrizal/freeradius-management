@@ -13,11 +13,11 @@
     <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-info">
+            <div class="small-box bg-brand">
               <div class="inner">
                 <h3><?= $total_router ?></h3>
 
-                <p>Router NAS</p>
+                <p>Total Router</p>
               </div>
               <div class="icon">
                 <i class="ion ion-nuclear"></i>
@@ -35,7 +35,7 @@
                 <p>Total Paket</p>
               </div>
               <div class="icon">
-                <i class="ion ion-speedometer"></i>
+                <i class="ion ion-android-list"></i>
               </div>
               <a href="admin.php?task=package-list" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -45,7 +45,7 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner text-white">
-                <h3><?= $total_active ?></h3>
+                <h3><?= '7' ?></h3>
 
                 <p>Pengguna Aktif</p>
               </div>
@@ -65,7 +65,7 @@
                 <p>Total Voucher</p>
               </div>
               <div class="icon">
-                <i class="ion ion-person"></i>
+                <i class="ion ion-ios-filing"></i>
               </div>
               <a href="admin.php?task=voucher-list" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -73,6 +73,61 @@
           <!-- ./col -->
         </div>
         <!-- /.row -->
+
+
+        <div class="row">
+          <div class="col-6">
+            <div class="card card-primary card-outline-brand">
+              <div class="card-header bg-white">
+                  <h3 class="card-title">Report Diagram</h3>
+                  <div class="card-tools">
+                  <!-- Buttons, labels, and many other things can be placed here! -->
+                  <!-- Here is a label for example -->
+                  </div>
+                  <!-- /.card-tools -->
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div>
+                  <canvas id="reportChart"></canvas>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <!-- <div class="card-footer">
+                  The footer of the card
+              </div> -->
+              <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+          </div>
+
+          <div class="col-6">
+            <div class="card card-primary card-outline-brand">
+              <div class="card-header bg-white">
+                  <h3 class="card-title">Statistic Online User</h3>
+                  <div class="card-tools">
+                  <!-- Buttons, labels, and many other things can be placed here! -->
+                  <!-- Here is a label for example -->
+                  </div>
+                  <!-- /.card-tools -->
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div>
+                  <canvas id="statisticOnline"></canvas>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <!-- <div class="card-footer">
+                  The footer of the card
+              </div> -->
+              <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+
+            
+          </div>
+        </div>
   </div>  
 </section>
 <!-- /.Main content -->

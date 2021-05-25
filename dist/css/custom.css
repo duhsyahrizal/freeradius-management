@@ -16,6 +16,16 @@
     color: #ffffff;
 }
 
+.card-primary.card-outline-brand {
+    border-top: 3px solid rgb(16, 108, 177)!important;
+}
+
+.sidebar-dark-brand .nav-sidebar > .nav-item > .nav-link.active,
+.sidebar-light-brand .nav-sidebar > .nav-item > .nav-link.active {
+  background-color: rgb(16, 108, 177)!important;
+  color: #ffffff;
+}
+
 .btn-brand:hover {
     background-color: rgb(14, 91, 150)!important;
 }

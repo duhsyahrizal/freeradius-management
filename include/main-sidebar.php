@@ -6,12 +6,12 @@
   $role = $responseSessi['role'];
   $fullname = $responseSessi['fullname'];
 ?>
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-brand elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-      <img src="dist/img/logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+      <img src="dist/img/logo-df.png" style="width: 15%; height: auto;" alt="Freeradius Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="ml-1 brand-text">Bayhost Radius</span>
+      <span class="ml-1 brand-text font-weight-light" style="font-size: 16px;"><b>Freeradius</b> Manager</span>
     </a>
     <!-- Sidebar -->
     <div class="sidebar">
