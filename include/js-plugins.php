@@ -103,7 +103,7 @@
 			data: {
         labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         datasets: [{
-          label: 'Statistic Online User',
+          label: 'User',
           data: [13, 7, 10, 8, 5, 9, 15],
           fill: false,
           borderColor: 'rgb(17, 110, 179)',
